@@ -7,4 +7,5 @@
 ---
 ## 2. 目录
 
-+ [MarkDown学习笔记](./MarkDown)
++ [MarkDown学习笔记 (已完成)](./MarkDown)
++ [Git学习笔记 (进行中)](./Git)
