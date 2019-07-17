@@ -9,6 +9,8 @@
 
 + [MarkDown学习笔记 (已完成)](./MarkDown)
 + [Git学习笔记 (进行中)](./Git)
++ IDEA学习笔记 (计划中)
++ WebStorm学习笔记 (计划中)
 + JavaScript学习笔记 (计划中)
 + JQuery学习笔记 (计划中)
 + CSS学习笔记 (计划中)
