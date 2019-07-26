@@ -26,7 +26,7 @@
 + MongoDB学习笔记 (计划中)
 
 ### 前端学习
-+ [JavaScript学习笔记](./JavaScript)
++ [JavaScript学习笔记 (进行中)](./JavaScript)
 + JQuery学习笔记 (计划中)
 + CSS学习笔记 (计划中)
 + Node.js学习笔记 (计划中)
