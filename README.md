@@ -15,7 +15,7 @@
 + Maven学习笔记 (计划中)
 + nginx学习笔记 (计划中)
 + tomcat学习笔记 (计划中)
-+ Linux学习笔记 (计划中)
++ [Linux学习笔记 (进行中)](./Linux)
 
 ### java系
 + Java学习笔记 (计划中)
