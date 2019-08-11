@@ -27,7 +27,23 @@ AT&T自家的Unix系统叫做System V，还有各大公司的Unix操作系统，
 ---
 ### 3.Linux发展历史
 
++ Linux起源  
+Linus Torvalds在386机器上使用Minix系统后，觉得很不错，但是Minix并没有进一步开发，功能不够。于是Torvalds决定自己写一个想要的系统，同时当时有了GNU计划的一些自由软件比如：GCC和bash。开发出来以后，他放到网络上，因为FTP网站将这个目录取名为Linux(Linus 的 Unix)，所以后面便称作Linux了，且这第一个放到网上的版本是0.02。
+
++ 兼容性  
+由于Linux不同于Unix，许多软件还是不能在Linux运行，值得修改软件进行移植。于是Torvalds开始修改Linux，让Linux支持POSIX(Portable Operating System Interface 可移植操作系统接口)规范，这样Linux就可以很容易地兼容Unix的软件了。
+
++ 后续发展  
+后来Linux使用的人不断增加，Torvalds一个人没有足够的精力来维护了，于是发展成模块化，将一些功能独立于内核外，慢慢的越来越多人加入到维护行列来，后来便成立了Linux的内核网站：https://www.kernel.org，也正是Linux内核的到来，让GNU计划中的大量软件得到广泛应用，如今Linux基本上就是搭载Linux内核 + GNU软件，所以也被托斯曼认为是GNU/Linux。
 
 ---
+### 4.Linux内核版本
 
+&emsp;&emsp;Linux的内核版本编号如下：
+```
+3.7.5-201.fc18.x86_64
+主版本.次版本.发布版本-修改版本
+```
+&emsp;&emsp;从3.0版本后，内核主要根据主线版本(MainLine)开发，开发完成后，就开发下一个主线版本。每个版本都有新功能的加入。当新的主线版本出现以后，对于旧的主线版本，一般分为两种方式：1.结束开发(EOF End of Live)。2.长期维护(Longterm)。
+ 
 #### [返回目录](./)
