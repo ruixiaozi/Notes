@@ -27,7 +27,7 @@ HH：小时，00 ~ 24
 mm：分钟，00 ~ 59
 ss：秒，00 ~ 59
 .sss：毫秒
-Z：时区，可以是：Z（UFC）、+HH:mm、-HH:mm
+Z：时区，可以是：Z（UTC）、+HH:mm、-HH:mm
 ```
 &emsp;&emsp;Z 用来表示传入时间的时区（zone），指定 Z 时表示 UTC 时间，不指定时表示的是本地时间。
 
