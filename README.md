@@ -34,6 +34,7 @@
 + Redis学习笔记 (计划中)
 + MongoDB学习笔记 (计划中)
 + JWT学习笔记 (计划中)
++ JGit学习笔记 (计划中)
 
 ### 前端学习
 + [JavaScript学习笔记 (进行中)](./JavaScript)
