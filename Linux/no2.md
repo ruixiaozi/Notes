@@ -57,8 +57,8 @@
 ### 2. 几个最基本的命令
 
 1. 数据同步写入磁盘：`sync` 命令
-2. 关机命令：`shutdown -h now`
-3. 重启命令：`reboot` ，`poweroff`
+2. 关机命令：`shutdown -h now` ， `poweroff`
+3. 重启命令：`reboot`
 4. 注销或退出当前bash命令：`exit`
 5. 帮助命令：`man` （其中代号1：命令和执行文件 5.配置文件  8.管理命令）
 6. 查看内核信息：`uname -r` 和 `uname -m`
