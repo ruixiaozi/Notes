@@ -34,7 +34,7 @@ Linus Torvalds在386机器上使用Minix系统后，觉得很不错，但是Mini
 由于Linux不同于Unix，许多软件还是不能在Linux运行，值得修改软件进行移植。于是Torvalds开始修改Linux，让Linux支持POSIX(Portable Operating System Interface 可移植操作系统接口)规范，这样Linux就可以很容易地兼容Unix的软件了。
 
 + 后续发展  
-后来Linux使用的人不断增加，Torvalds一个人没有足够的精力来维护了，于是发展成模块化，将一些功能独立于内核外，慢慢的越来越多人加入到维护行列来，后来便成立了Linux的内核网站：https://www.kernel.org，也正是Linux内核的到来，让GNU计划中的大量软件得到广泛应用，如今Linux基本上就是搭载Linux内核 + GNU软件，所以也被托斯曼认为是GNU/Linux。
+后来Linux使用的人不断增加，Torvalds一个人没有足够的精力来维护了，于是发展成模块化，将一些功能独立于内核外，慢慢的越来越多人加入到维护行列来，后来便成立了Linux的内核网站：`https://www.kernel.org`，也正是Linux内核的到来，让GNU计划中的大量软件得到广泛应用，如今Linux基本上就是搭载Linux内核 + GNU软件，所以也被托斯曼认为是GNU/Linux。
 
 ---
 ### 4.Linux内核版本
