@@ -42,9 +42,10 @@
 2. f(x+a)=-f(x)，T=2a
 3. f(x+a)=1/f(x)，T=2a
 4. f(x+a)=-1/f(x)，T=2a
-5. f(x)关于x=a和x=b都对称，T=2|b-a|
-6. y=Asin(ωx+φ)+b或者y=Acos(ωx+φ)+b，T=2π/|ω|
-7. y=Atan(ωx+φ)+b，T=π/|ω|
+5. f(x+a)=f(x+b)，T=|a-b|
+6. f(x)关于x=a和x=b都对称，T=2|b-a|
+7. y=Asin(ωx+φ)+b或者y=Acos(ωx+φ)+b，T=2π/|ω|
+8. y=Atan(ωx+φ)+b，T=π/|ω|
 
 ---
 ### 7. 图像变换
