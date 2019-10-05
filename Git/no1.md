@@ -48,5 +48,13 @@ git clone [url] [dirname]
 &emsp;&emsp;其中 url 是仓库的地址。dirname可以省略，代表自己定义要新建的项目目录名称。
 
 ---
+### 6.保存远程仓库的用户名和密码
+
+&emsp;&emsp;使用如下命令，可以存储远程仓库的用户名和密码：
+```
+git config --global credential.helper store
+```
+
+---
 
 #### [返回目录](./)
