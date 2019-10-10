@@ -46,8 +46,7 @@
 | continue语句 | continue; 或者 continue 标签名; |
 | with对象空间 | with (对象) 语句 |
 | switch选择(全等模式) | switch (表达式) { case 表达式: 语句 …… default: 语句} |
-| 
-
+ 
 
 ---
 
