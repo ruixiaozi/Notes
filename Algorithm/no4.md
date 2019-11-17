@@ -1,5 +1,10 @@
 ## 算法学习笔记 排序算法
 ---
+
++ 各排序算法的对比
+![排序算法比较](./img/pxsf.jpg)
+
+---
 ### 1. 选择排序  
 
 &emsp;&emsp;就是从需要排序的数据中选择最小的记录下来，然后放在第一个，选择第二小的放在第二个，依次下去。 
@@ -154,3 +159,46 @@ inline void shellSort(T arr[], int begin, int end){
 ---
 ### 6. 快速排序  
 
+&emsp;&emsp;从数组中选择一个元素，我们把这个元素称之为中轴元素吧，然后把数组中所有小于中轴元素的元素放在其左边，所有大于或等于中轴元素的元素放在其右边，显然，此时中轴元素所处的位置的是有序的。也就是说，我们无需再移动中轴元素的位置。然后再分别对中轴元素左右两个子数列递归进行上述操作。
+
++ 时间复杂度：NlogN
++ 特点：平均时间复杂度是最稳定于：NlogN的算法
+
+![快速排序演示](./img/kspx.gif)
+
+```
+//快速排序
+template<class T>
+void quickSort(T arr[], int begin, int end){
+	if (begin < end){
+		int mid = quickPartition(arr, begin, end);
+		quickSort(arr, begin, mid - 1);
+		quickSort(arr, mid + 1, end);
+	}
+}
+
+//快排用到的工具函数
+template<class T>
+inline int quickPartition(T arr[], int begin, int end){
+	T midE = arr[begin];
+	int i = begin+1, j = end;
+	
+	while (true){
+		while (i <= j && arr[i] <= midE) ++i;
+
+		while (i <= j && arr[j] >= midE) --j;
+
+		if (i >= j)
+			break;
+
+		swap(arr[i], arr[j]);
+	}
+	swap(arr[begin], arr[j]);
+	return j;
+}
+```
+
+---
+### 7. 堆排序  
+
+&emsp;&emsp;
