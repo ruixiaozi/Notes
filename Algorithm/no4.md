@@ -150,3 +150,7 @@ inline void shellSort(T arr[], int begin, int end){
 	}
 }
 ```
+
+---
+### 6. 快速排序  
+
