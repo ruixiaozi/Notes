@@ -167,16 +167,6 @@ inline void shellSort(T arr[], int begin, int end){
 ![快速排序演示](./img/kspx.gif)
 
 ```
-//快速排序
-template<class T>
-void quickSort(T arr[], int begin, int end){
-	if (begin < end){
-		int mid = quickPartition(arr, begin, end);
-		quickSort(arr, begin, mid - 1);
-		quickSort(arr, mid + 1, end);
-	}
-}
-
 //快排用到的工具函数
 template<class T>
 inline int quickPartition(T arr[], int begin, int end){
@@ -196,6 +186,16 @@ inline int quickPartition(T arr[], int begin, int end){
 	swap(arr[begin], arr[j]);
 	return j;
 }
+
+//快速排序
+template<class T>
+void quickSort(T arr[], int begin, int end){
+	if (begin < end){
+		int mid = quickPartition(arr, begin, end);
+		quickSort(arr, begin, mid - 1);
+		quickSort(arr, mid + 1, end);
+	}
+}
 ```
 
 ---
@@ -203,4 +203,52 @@ inline int quickPartition(T arr[], int begin, int end){
 
 &emsp;&emsp;堆排序是利用堆这个数据结构而设计的一种排序算法，构造一个堆。  
 &emsp;&emsp;堆是具有以下性质的完全二叉树：每个结点的值都大于或等于其左右孩子结点的值，称为大顶堆；或者每个结点的值都小于或等于其左右孩子结点的值，称为小顶堆。  
-&emsp;&emsp;大顶堆实现从小到大，小顶堆实现从大到小排序。可以用数组来存储一个二叉树，k节点的两个子节点在2k+1和2k+2位置。而k节点的父节点在(k+1)/2-1位置
+&emsp;&emsp;大顶堆实现从小到大，小顶堆实现从大到小排序。可以用数组来存储一个二叉树，k节点的两个子节点在2k+1和2k+2位置。而k节点的父节点在(k+1)/2-1位置。每次让大顶堆的顶与最后一个元素交换，然后再把顶上这个元素下沉，构成新的大顶堆。  
+
++ 时间复杂度：NlogN
++ 特点：堆排序算是选择排序的一个变种，最好、最坏、平均的时间复杂都为O(nlogn)，空间复杂度为O(1)，是一种不稳定的排序。
+
+![堆排序演示](./img/dpx.gif)
+
+```
+//堆排序用到的工具，下沉小元素，一般从倒数第二层开始降
+template<class T>
+void heepSink(T arr[], int begin, int end){
+	//保证有下一级元素
+	while (2 * begin + 1 <= end){
+		int next = 2 * begin + 1;
+		//选出两个子结点最大的一个
+		if (next < end && arr[next + 1] > arr[next])
+			next++;
+		//如果已经是最大的，就不需要下沉了
+		if (arr[begin] > arr[next])
+			break;
+
+		//上浮大的元素
+		swap(arr[begin], arr[next]);
+		//下一轮
+		begin = next;
+	}
+}
+
+//堆排序，从小到大
+template<class T>
+void heepSort(T arr[], int begin, int end){
+	//先构造一个大顶堆,从最后一个元素的父元素开始下沉，是(end+1)/2-1
+	for (int i = (end+1) / 2-1; i >= 0; i--){
+		heepSink(arr, i, end);
+	}
+
+	while (end > begin){
+		//把大顶放到后面，然后end减一
+		swap(arr[begin], arr[end--]);
+		//然后把顶上的这个元素沉下去，形成新的大顶堆
+		heepSink(arr, begin, end);
+	}
+}
+```
+
+---
+### 8. 归并排序  
+
+&emsp;&emsp;
