@@ -213,37 +213,40 @@ void quickSort(T arr[], int begin, int end){
 ```
 //堆排序用到的工具，下沉小元素，一般从倒数第二层开始降
 template<class T>
-void heepSink(T arr[], int begin, int end){
+void heepSink(T arr[], int begin,int px, int end){
 	//保证有下一级元素
-	while (2 * begin + 1 <= end){
-		int next = 2 * begin + 1;
+	int npx;
+	while (begin+(npx=2 * px + 1) <= end){
+		
 		//选出两个子结点最大的一个
-		if (next < end && arr[next + 1] > arr[next])
-			next++;
+		if (begin + npx < end && arr[begin + npx + 1] > arr[begin + npx])
+			npx++;
 		//如果已经是最大的，就不需要下沉了
-		if (arr[begin] > arr[next])
+		if (arr[begin+px] > arr[begin+npx])
 			break;
 
 		//上浮大的元素
-		swap(arr[begin], arr[next]);
+		swap(arr[begin+px], arr[begin+npx]);
 		//下一轮
-		begin = next;
+		px = npx;
 	}
 }
 
 //堆排序，从小到大
 template<class T>
 void heepSort(T arr[], int begin, int end){
-	//先构造一个大顶堆,从最后一个元素的父元素开始下沉，是(end+1)/2-1
-	for (int i = (end+1) / 2-1; i >= 0; i--){
-		heepSink(arr, i, end);
+	int len = end - begin + 1;
+
+	//先构造一个大顶堆,从最后一个元素的父元素开始下沉
+	for (int i = len / 2-1; i >= 0; i--){
+		heepSink(arr, begin,i, end);
 	}
 
 	while (end > begin){
 		//把大顶放到后面，然后end减一
 		swap(arr[begin], arr[end--]);
 		//然后把顶上的这个元素沉下去，形成新的大顶堆
-		heepSink(arr, begin, end);
+		heepSink(arr, begin,0, end);
 	}
 }
 ```
