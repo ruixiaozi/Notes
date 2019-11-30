@@ -4,6 +4,8 @@
 + 各排序算法的对比
 ![排序算法比较](./img/pxsf.jpg)
 
++ 梳排序：图上没有，详见下文梳排序内容。
+
 ---
 ### 1. 选择排序  
 
@@ -254,4 +256,190 @@ void heepSort(T arr[], int begin, int end){
 ---
 ### 8. 归并排序  
 
-&emsp;&emsp;
+&emsp;&emsp;归并排序使用的是分治的思想，先把原数组分成两个大小尽量相等的子数组，再分别对这个两个子数组排序，最后合并两个有序子数组。
+
++ 时间复杂度：NlogN
++ 特点：相对稳定，但是需要额外的空间
+
+![归并排序演示](./img/gbpx.gif)
+
+```
+//归并排序用到的工具
+template<class T>
+void merge(T arr[], int begin, int mid, int end){
+	int len = end - begin + 1;
+	T *tems = new int[len];
+
+	for (int inx = 0, i = begin, j = mid + 1; inx<len; inx++){
+		if (i>mid){
+			tems[inx] = arr[j++];
+		}
+		else if (j > end){
+			tems[inx] = arr[i++];
+		}
+		else if (arr[i] < arr[j]){
+			tems[inx] = arr[i++];
+		}
+		else{
+			tems[inx] = arr[j++];
+		}
+	}
+
+	for (int i = 0; i < len; ++i)
+		arr[begin+i] = tems[i];
+
+	delete[] tems;
+}
+
+//归并排序，从小到大
+template<class T>
+void mergeSort(T arr[], int begin, int end){
+	if (begin >= end)
+		return;
+	int mid = (begin + end) / 2;
+	mergeSort(arr, begin, mid);
+	mergeSort(arr, mid + 1, end);
+	merge(arr, begin, mid, end);
+}
+```
+
+---
+### 9. 计数排序（只适用于整数）  
+
+&emsp;&emsp;计数排序的思想是将输入的数据转换成键存储在额外的空间中，计数排序要求输入的数据在一定的范围之内。使用一个额外的数组C，其中第i个元素的待排序数组A中值等于i的元素的个数。然后根据数据C来排序。
+
++ 时间复杂度：N+K
++ 特点：稳定，只适用于整数，非比较排序
+
+![计数排序演示](./img/jspx.gif)
+
+```
+//计数排序，从小到大
+void countSort(int arr[],int begin,int end){
+	int min, max,px;
+	min = max = arr[begin];
+
+	for (int i = begin+1; i <= end; ++i){
+		if (arr[i]>max)
+			max = arr[i];
+		if (arr[i] < min)
+			min = arr[i];
+	}
+	//最小偏移
+	px = 0 - min;
+	int len = max - min + 1;
+	int *tems = new int[len]();
+	//计数
+	for (int i = begin; i <= end; ++i){
+		tems[arr[i] + px]++;
+	}
+	//排序
+	for (int i = 0,inx=begin; i < len; ++i){
+		while (tems[i]-->0){
+			arr[inx++] = i-px;
+		}
+	}
+}
+```
+
+---
+### 10. 桶排序（只适用于整数）  
+
+&emsp;&emsp;桶排序是对计数排序的一种归纳，能够适当平衡时间复杂度和空间复杂度，在数据均匀分布的时候效果比较好。  
+&emsp;&emsp;原理是创建一定数量的桶，每个桶里面可以装一个数据段的不同数据，数据段（桶）是按数组顺序排列的，使用不定长度线性表存储每个桶的数据，这样可以节省一定的空间。对于每个桶的数据，可以配合其他排序算法排序。
+
++ 时间复杂度：n+k 到 n<sup>2</sup> 之间
++ 特点：也比较稳定，把计数排序中装一个数据的桶，扩展成装一段数据的桶
+
+![桶排序演示](./img/tpx.png)
+
+```
+//桶排序，从小到大
+//意义不大，需要配合其他排序算法，可体会算法研究的思维
+//对计数排序的优化，运用分治思想等，虽然效果不明显
+void bucketSort(int arr[], int begin, int end){
+	int min, max, px;
+	min = max = arr[begin];
+
+	for (int i = begin + 1; i <= end; ++i){
+		if (arr[i]>max)
+			max = arr[i];
+		if (arr[i] < min)
+			min = arr[i];
+	}
+	//每个桶最多装10个元素
+	min /= 10, max /= 10;
+	
+	int len = max - min + 1;
+	px = 0 - min;
+	vector<int> *tems = new vector<int>[len];
+
+	for (int i = begin; i <= end; ++i){
+		int inx = arr[i] / 10;
+		tems[inx+px].push_back(arr[i]);
+	}
+
+	for (int i = 0,index=begin; i < len; ++i){
+		if (tems[i].size()>0){
+			sort(tems[i].begin(), tems[i].end());
+			for (auto p = tems[i].begin(); p < tems[i].end(); p++){
+				arr[index++] = *p;
+			}
+		}
+		
+	}
+	
+	delete[] tems;
+}
+```
+
+---
+### 11. 基数排序（只适用于正整数）  
+
+&emsp;&emsp;基数排序只适用于正整数，主要是按基数从低到高来排序，而内层排序用到了桶排序的思想。  
+
++ 时间复杂度：n*k
+
+![基数排序演示](./img/radixpx.gif)
+
+```
+//基数排序，从小到大
+//桶排序的计数排序的优化
+//只用于正整数
+void radixSort(int arr[], int begin, int end){
+	int max,radix=0;
+	max = arr[begin];
+
+	for (int i = begin + 1; i <= end; ++i){
+		//负数无法排序
+		if (arr[i]<0)
+			return;
+		if (arr[i]>max)
+			max = arr[i];
+	}
+	//求位数
+	for (; max > 0; radix++){
+		max /= 10;
+	}
+	//准备10个数组
+	vector<int> tems[10];
+	//按基数从低到高运用桶排序
+	for (int k = 0; k < radix;++k){
+		for (int i = begin; i <= end; ++i){
+			int key = arr[i] / (int)pow(10, k) % 10;
+			tems[key].push_back(arr[i]);
+		}
+		for (int i = 0,index=begin; i < 10; ++i){
+			for (auto p = tems[i].begin(); p < tems[i].end(); p++){
+				arr[index++] = *p;
+			}
+			tems[i].clear();
+		}
+	}
+}
+```
+
+
+---
+
+#### [返回目录](./)
