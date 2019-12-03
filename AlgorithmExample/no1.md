@@ -66,7 +66,29 @@
     b = b ^ a;
     a = a ^ b;
     ```
-    
+4. 3n+1问题  
+    对于任意大于1的自然数n，若n为奇数，则将n变成3n+1，否则变成n的一半。经过若干次变换，一定会使n变为1。输入n，输出变换的次数。
+    ```
+    //省略头文件等
+    //本题主要是注意使用long long类型，不然出现越界问题
+    int main(){
+
+        long long n = readLongLong();
+        int count;
+
+        for (count = 0; n != 1;count++){
+            if (n & 1 == 1)
+                n = n * 3 + 1;
+            else
+                n /= 2;
+        }
+
+        printf("%d\n", count);
+
+        return 0;
+    }
+
+    ```
 ---
 
 #### [返回目录](./)
