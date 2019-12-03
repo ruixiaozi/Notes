@@ -19,6 +19,24 @@
 
         return sign ? -result : result;
     }
+
+    //读取long long类型
+    inline long long readLongLong(){
+        char ch;
+        int sign = 0;
+        long long result = 0;
+
+        while (ch = getchar(), ch != '-' && (ch<'0' || ch>'9'));
+        sign = ((ch == '-') && (ch = getchar()));
+
+        while (ch >= '0' && ch <= '9')
+            result = result * 10 + (ch - 48), ch = getchar();
+
+        ungetc(ch, stdin);
+
+        return sign ? -result : result;
+    }
+
     //读取整型
     inline int readInt(){
         char ch;
