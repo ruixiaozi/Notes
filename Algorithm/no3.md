@@ -39,7 +39,13 @@
         return false;
     }
     ```
-
+4. 显示程序运行时间
+    ```
+    //显示程序运行时间
+    inline void printRunTimes(){
+        printf("Time used：%.6f\n",(double)clock()/CLOCKS_PER_SEC);
+    }
+    ```
 
 ---
 
