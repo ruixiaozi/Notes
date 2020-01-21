@@ -15,7 +15,7 @@
 ### 工具学习
 + [MarkDown学习笔记 (已完成)](./MarkDown)
 + [Git学习笔记 (已完成)](./Git)
-+ IDEA学习笔记 (计划中)
++ [IDEA学习笔记 (进行中)](./IDEA) 
 + WebStorm学习笔记 (计划中)
 + Maven学习笔记 (计划中)
 + nginx学习笔记 (计划中)
