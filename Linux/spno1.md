@@ -98,8 +98,6 @@ ascii_upload_enable=YES
 ascii_download_enable=YES
 #设定Vsftpd的登陆标语。
 ftpd_banner=Welcome to Ruixiaozi FTP service.
-#禁止用户登出自己的FTP主目录。
-chroot_list_enable=NO
 #禁止用户登陆FTP后使用"ls -R"的命令。该命令会对服务器性能造成巨大开销。
 ls_recurse_enable=NO
 #设定支持TCP Wrappers
@@ -109,6 +107,10 @@ tcp_wrappers=YES
 ```
 #设定本地用户可以访问。注意：主要是为虚拟宿主用户，如果该项目设定为NO那么所有虚拟用户将无法访问。
 local_enable=YES
+#是否将所有用户限制在自己的root目录
+chroot_local_user=YES
+#新版vsftpd安全检查如果限制用户在自己的root目录，则不允许用户的root目录具有写权限，设置这个表示，可以允许有写权限
+allow_writeable_chroot=YES
 #设定启用虚拟用户功能。
 guest_enable=YES
 #指定虚拟用户的宿主用户(需要新建一个用户vsftpd，具体请看下文)。
