@@ -29,7 +29,7 @@
 
 ### java系
 + Java学习笔记 (计划中)
-+ Spring学习笔记 (计划中)
++ [Spring学习笔记 (进行中)](./Spring)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
 + Redis学习笔记 (计划中)
