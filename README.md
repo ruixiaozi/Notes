@@ -28,7 +28,7 @@
 + Tampermonkey学习笔记 (计划中)
 
 ### java系
-+ Java学习笔记 (计划中)
++ [Java学习笔记 (进行中)](./Java)
 + [Spring学习笔记 (进行中)](./Spring)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
