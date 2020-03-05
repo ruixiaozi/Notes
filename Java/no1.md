@@ -43,6 +43,28 @@
 + boolean字面量  
     true | false
 
+---
+### 2. 运算符  
+
+![运算符1](./img/conduct1.png)  
+![运算符2](./img/conduct2.png)
+
+---
+### 3. 流程结构
+
++ 块作用域  
+    不存在块作用域
++ 条件语句
+    `if……else……`  
++ 循环语句
+    `while`  
+    `do……while`  
+    `for`
++ 多重选择  
+    `switch`
+
+
+
 
 ---
 
