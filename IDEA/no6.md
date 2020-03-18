@@ -2,7 +2,7 @@
 ---
 ### 1. 设置
 
-`Editor` -> `Live Templates` 里面可以设置实时代码模板
+`Editor` -> `Live Templates` 里面可以设置实时代码模板，或者在`Editor` -> `General` -> `Postfix Completion`
 
 ---
 ### 2. 创建自定义模板
