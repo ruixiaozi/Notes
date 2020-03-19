@@ -11,6 +11,13 @@
 
 ![jvm](./img/jvm.png)
 
+---
+### 3. JVM架构
+
+架构：
+
+![JVM架构](./img/jvmdes.png)
+
 
 ---
 
