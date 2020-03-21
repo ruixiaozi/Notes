@@ -7,10 +7,18 @@
 ---
 ## 2. 目录
 
-### 标准化学习
-+ EMCAScript标准学习笔记 (计划中)
-+ C99标准学习笔记 (计划中)
-+ [其他标准学习笔记 (进行中)](./OtherStandard)
+### java系
++ [Java学习笔记 (进行中)](./Java)
++ [JVM学习笔记 (进行中)](./JVM)
++ [Spring学习笔记 (进行中)](./Spring)
++ MySQL基础学习笔记 (计划中)
++ [MySQL高级学习笔记 (进行中)](./MysqlAD)
++ Mybatis学习笔记 (计划中)
++ Spring boot学习笔记 (计划中)
++ Redis学习笔记 (计划中)
++ MongoDB学习笔记 (计划中)
++ JWT学习笔记 (计划中)
++ JGit学习笔记 (计划中)
 
 ### 工具学习
 + [MarkDown学习笔记 (已完成)](./MarkDown)
@@ -24,19 +32,6 @@
 + json学习笔记 (计划中)
 + apidoc学习笔记 (计划中)
 + Tampermonkey学习笔记 (计划中)
-
-### java系
-+ [Java学习笔记 (进行中)](./Java)
-+ [JVM学习笔记 (进行中)](./JVM)
-+ [Spring学习笔记 (进行中)](./Spring)
-+ MySQL基础学习笔记 (计划中)
-+ [MySQL高级学习笔记 (进行中)](./MysqlAD)
-+ Mybatis学习笔记 (计划中)
-+ Spring boot学习笔记 (计划中)
-+ Redis学习笔记 (计划中)
-+ MongoDB学习笔记 (计划中)
-+ JWT学习笔记 (计划中)
-+ JGit学习笔记 (计划中)
 
 ### 前端学习
 + [JavaScript学习笔记 (进行中)](./JavaScript)
@@ -65,6 +60,14 @@
 + 51单片机学习笔记 (计划中)
 + 微机原理学习笔记 (计划中)
 + 嵌入式Linux学习笔记 (计划中)
+
+
+### 标准化学习
++ EMCAScript标准学习笔记 (计划中)
++ C99标准学习笔记 (计划中)
++ [其他标准学习笔记 (进行中)](./OtherStandard)
+
+
 
 ### 英语
 + [看美剧学习笔记 (进行中)](.AmericanDrama)
