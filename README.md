@@ -26,6 +26,7 @@
 + [Git学习笔记 (已完成)](./Git)
 + [IDEA学习笔记 (已完成)](./IDEA) 
 + [Gradle学习笔记 (进行中)](./Gradle)
++ Lombok学习笔记 (计划中)
 + Maven学习笔记 (计划中)
 + nginx学习笔记 (计划中)
 + tomcat学习笔记 (计划中)
