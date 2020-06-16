@@ -13,6 +13,7 @@
 + [Spring学习笔记 (进行中)](./Spring)
 + [MySQL基础学习笔记 (进行中)](./Mysql)
 + [MySQL高级学习笔记 (进行中)](./MysqlAD)
++ [Java数据结构与算法 (进行中)](./JavaStruct)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
 + Redis学习笔记 (计划中)
