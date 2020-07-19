@@ -39,11 +39,11 @@
 ### 前端学习
 + [JavaScript学习笔记 (进行中)](./JavaScript)
 + JQuery学习笔记 (计划中)
-+ CSS学习笔记 (计划中)
++ LESS学习笔记 (计划中)
 + Node.js学习笔记 (计划中)
 + webpack学习笔记 (计划中)
 + MockJS学习笔记 (计划中)
-+ Vue全家桶学习笔记 (计划中)
++ [Vue全家桶学习笔记 (进行中)](./Vue)
 + Electron学习笔记 (计划中)
 
 ### 理论知识
