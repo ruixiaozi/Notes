@@ -10,3 +10,4 @@
 + [VueCLI](./no6.md)
 + [Vue-router](./no7.md)
 + [Promise](./no8.md)
++ [Vuex](./no9.md)
