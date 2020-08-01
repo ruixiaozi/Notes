@@ -9,3 +9,4 @@
 + [Webpack](./no5.md)
 + [VueCLI](./no6.md)
 + [Vue-router](./no7.md)
++ [Promise](./no8.md)
