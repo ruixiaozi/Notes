@@ -7,13 +7,26 @@
 ---
 ## 2. 目录
 
+### 前端学习
+
++ [HTML+CSS学习笔记 (进行中)](./HTML)
++ [JavaScript学习笔记 (进行中)](./JavaScript)
++ JQuery学习笔记 (计划中)
++ LESS学习笔记 (计划中)
++ Node.js学习笔记 (计划中)
++ webpack学习笔记 (计划中)
++ MockJS学习笔记 (计划中)
++ [Vue全家桶学习笔记 (进行中)](./Vue)
++ Electron学习笔记 (计划中)
+
 ### java系
-+ [Java学习笔记 (进行中)](./Java)
-+ [JVM学习笔记 (进行中)](./JVM)
-+ [Spring学习笔记 (进行中)](./Spring)
-+ [MySQL基础学习笔记 (进行中)](./Mysql)
-+ [MySQL高级学习笔记 (进行中)](./MysqlAD)
-+ [Java数据结构与算法 (进行中)](./JavaStruct)
+
++ [Java学习笔记 (暂停)](./Java)
++ [JVM学习笔记 (暂停)](./JVM)
++ [Spring学习笔记 (暂停)](./Spring)
++ [MySQL基础学习笔记 (暂停)](./Mysql)
++ [MySQL高级学习笔记 (暂停)](./MysqlAD)
++ [Java数据结构与算法 (暂停)](./JavaStruct)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
 + Redis学习笔记 (计划中)
@@ -25,7 +38,7 @@
 + [MarkDown学习笔记 (已完成)](./MarkDown)
 + [Git学习笔记 (已完成)](./Git)
 + [IDEA学习笔记 (已完成)](./IDEA) 
-+ [Gradle学习笔记 (进行中)](./Gradle)
++ [Gradle学习笔记 (暂停)](./Gradle)
 + Lombok学习笔记 (计划中)
 + Maven学习笔记 (计划中)
 + nginx学习笔记 (计划中)
@@ -35,17 +48,6 @@
 + json学习笔记 (计划中)
 + apidoc学习笔记 (计划中)
 + Tampermonkey学习笔记 (计划中)
-
-### 前端学习
-+ [HTML+CSS学习笔记 (进行中)](./HTML)
-+ [JavaScript学习笔记 (进行中)](./JavaScript)
-+ JQuery学习笔记 (计划中)
-+ LESS学习笔记 (计划中)
-+ Node.js学习笔记 (计划中)
-+ webpack学习笔记 (计划中)
-+ MockJS学习笔记 (计划中)
-+ [Vue全家桶学习笔记 (进行中)](./Vue)
-+ Electron学习笔记 (计划中)
 
 ### 理论知识
 + [初等数学学习笔记 (进行中)](./ElementaryMath)
@@ -67,8 +69,6 @@
 
 
 ### 标准化学习
-+ EMCAScript标准学习笔记 (计划中)
-+ C99标准学习笔记 (计划中)
 + [其他标准学习笔记 (进行中)](./OtherStandard)
 
 
