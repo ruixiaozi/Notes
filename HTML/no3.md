@@ -145,6 +145,107 @@
    </pre>
    ```
 
+7. 表格标签
+
+   创建表格的基本语法：
+
+   ```html
+   <table>
+     <caption>标题</caption>
+     <thead>
+     	<tr>
+       	<th>单元格内的文字</th>
+         ...
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td>单元格内的文字</td>
+         ...
+       </tr>
+     </tbody>
+     <tfoot>
+       <tr>
+         <td>单元格内的文字</td>
+         ...
+       </tr>
+     </tfoot>
+   </table>
+   ```
+
+   | 标签名                | 定义           | 说明                                         |
+   | --------------------- | :------------- | :------------------------------------------- |
+   | `<table></table>`     | 表格标签       | 就是一个四方的盒子                           |
+   | `<tr></tr>`           | 表格行标签     | 行标签要再table标签内部才有意义              |
+   | `<td></td>`           | 单元格标签     | 单元格标签是个容器级元素，可以放任何东西     |
+   | `<th></th>`           | 表头单元格标签 | 它还是一个单元格，但是里面的文字会居中且加粗 |
+   | `<caption></caption>` | 表格标题标签   | 表格的标题，跟着表格一起走，和表格居中对齐   |
+   | `<thead></thead>`     | 题头           |                                              |
+   | `<tbody></tbody>`     | 主体           |                                              |
+   | `<tfoot></tfoot>`     | 脚部           |                                              |
+   | clospan 和 rowspan    | 合并属性       | 用来合并单元格的                             |
+
+8. 列表标签
+
+   + 无序列表
+
+     其基本语法格式如下：
+
+     ```html
+     <ul>
+       <li>列表项1</li>
+       <li>列表项2</li>
+       <li>列表项3</li>
+       ......
+     </ul>
+     ```
+
+   + 有序列表
+
+     其基本语法格式如下：
+
+     ```html
+     <ol>
+       <li>列表项1</li>
+       <li>列表项2</li>
+       <li>列表项3</li>
+       ......
+     </ol>
+     ```
+
+   + 自定义列表
+
+     其基本语法格式如下：
+
+     ```html
+     <dl>
+       <dt>名词1</dt>
+       <dd>名词1解释1</dd>
+       <dd>名词1解释2</dd>
+       ...
+       <dt>名词2</dt>
+       <dd>名词2解释1</dd>
+       <dd>名词2解释2</dd>
+       ...
+     </dl>
+     ```
+
+9. 表单域标签
+
+   其基本语法如下：
+
+   ```html
+   <form action="url地址" method="提交方式" name="表单名称">
+     各种表单控件
+   </form>
+   ```
+
+   | 属性   | 属性值   | 作用                                               |
+   | ------ | :------- | -------------------------------------------------- |
+   | action | url地址  | 用于指定接收并处理表单数据的服务器程序的url地址。  |
+   | method | get/post | 用于设置表单数据的提交方式，其取值为get或post。    |
+   | name   | 名称     | 用于指定表单的名称，以区分同一个页面中的多个表单。 |
+
    
 
 
@@ -194,6 +295,21 @@
    - **未被访问**的链接带有 <ins>下划线</ins> 而且是 <span style="color:blue">蓝色</span> 的
    - **已被访问**的链接带有 <ins>下划线</ins> 而且是 <span style="color:purple">紫色</span> 的
    - **活动链接**带有 <ins>下划线</ins> 而且是 <span style="color:red">红色</span> 的
+   
+4. lable标签
+
+   label 标签为 input 元素定义标注。通过与input绑定，可以实现点击标签让input获取焦点的功能。
+
+   其基本语法格式如下：
+
+   ```html
+   <label> 用户名： <input type="radio" name="usename" value="请输入用户名">   </label>
+   
+   <label for="sex">男</label>
+   <input type="radio" name="sex"  id="sex">
+   ```
+
+   
 
 ---
 
@@ -209,7 +325,7 @@
    <img src="图像URL" alt="某某图形" />
    ```
 
-   属性列表：
+   属性说明：
 
    | 属性   | 值            | 描述                 | 是否必要 |
    | :----- | :------------ | :------------------- | -------- |
@@ -219,7 +335,51 @@
    | height | *pixels*  *%* | 定义图像的高度。     |          |
    | width  | *pixels*  *%* | 设置图像的宽度。     |          |
 
+2. input标签
 
+   表单输入标签，其基本语法如下：
+
+   ```html
+   <input type="属性值" value="你好">
+   ```
+
+   属性说明：
+
+   | 属性        | 值                                                           | 描述                                        | 是否必要 |
+   | :---------- | :----------------------------------------------------------- | :------------------------------------------ | -------- |
+   | type        | button<br/>checkbox<br/>color<br/>date<br/>datetime<br/>datetime-local<br/>email<br/>file<br/>hidden<br/>image<br/>month<br/>number<br/>password<br/>radio<br/>range<br/>reset<br/>search<br/>submit<br/>tel<br/>text<br/>time<br/>url<br/>week | 要显示的 `<input> `元素的类型               | 必要     |
+   | name        | *text*                                                       | 控件名称                                    |          |
+   | value       | *text*                                                       | 控制默认值                                  |          |
+   | placeholder | text                                                         | 预显示提示                                  |          |
+   | checked     | checked                                                      | 在页面加载时应该被预先选定的 `<input> `元素 |          |
+   | disabled    | disabled                                                     | 禁用的 `<input>` 元素                       |          |
+   | readonly    | readonly                                                     | 输入字段是只读的                            |          |
+
+3. 文本域标签
+
+   其基本语法如下：
+
+   ```html
+   <textarea >
+     默认值
+   </textarea>
+   ```
+
+4. 下拉列表标签
+
+   一般不使用，自定义下拉组件，通过 `div` + `ul` 实现。
+
+   其基本语法如下：
+
+   ```html
+   <select name="test" id="test">
+     <option value="1">1</option>
+     <option value="2">2</option>
+     <option value="3">3</option>
+   </select>
+   ```
+
+   
 
 
 
