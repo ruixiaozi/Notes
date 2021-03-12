@@ -115,45 +115,45 @@
 
 ### 8. 边框与轮廓
 
-| 属性                       | 描述                                                         | CSS  |
-| -------------------------- | ------------------------------------------------------------ | ---- |
-| border                     | 复合属性。设置对象边框的特性。                               | 1    |
-| border-bottom              | 复合属性。设置对象底部边框的特性。                           | 1    |
-| border-bottom-color        | 设置或检索对象的底部边框颜色。                               | 1    |
-| border-bottom-style        | 设置或检索对象的底部边框样式。                               | 1    |
-| border-bottom-width        | 设置或检索对象的底部边框宽度。                               | 1    |
-| border-color               | 置或检索对象的边框颜色。                                     | 1    |
-| border-left                | 复合属性。设置对象左边边框的特性。                           | 1    |
-| border-left-color          | 设置或检索对象的左边边框颜色。                               | 1    |
-| border-left-style          | 设置或检索对象的左边边框样式。                               | 1    |
-| border-left-width          | 设置或检索对象的左边边框宽度。                               | 1    |
-| border-right               | 复合属性。设置对象右边边框的特性。                           | 1    |
-| border-right-color         | 设置或检索对象的右边边框颜色。                               | 1    |
-| border-right-style         | 设置或检索对象的右边边框样式。                               | 1    |
-| border-right-width         | 设置或检索对象的右边边框宽度。                               | 1    |
-| border-style               | 设置或检索对象的边框样式。                                   | 1    |
-| border-top                 | 复合属性。设置对象顶部边框的特性。                           | 1    |
-| border-top-color           | 设置或检索对象的顶部边框颜色                                 | 1    |
-| border-top-style           | 设置或检索对象的顶部边框样式。                               | 1    |
-| border-top-width           | 设置或检索对象的顶部边框宽度。                               | 1    |
-| border-width               | 设置或检索对象的边框宽度。                                   | 1    |
-| outline                    | 复合属性。设置或检索对象外的线条轮廓。                       | 2    |
-| outline-color              | 设置或检索对象外的线条轮廓的颜色。                           | 2    |
-| outline-style              | 设置或检索对象外的线条轮廓的样式。                           | 2    |
-| outline-width              | 设置或检索对象外的线条轮廓的宽度。                           | 2    |
-| border-bottom-left-radius  | 设置或检索对象的左下角圆角边框。提供2个参数，2个参数以空格分隔，每个参数允许设置1个参数值，第1个参数表示水平半径，第2个参数表示垂直半径，如第2个参数省略，则默认等于第1个参数 | 3    |
-| border-bottom-right-radius | 设置或检索对象的右下角圆角边框。                             | 3    |
-| border-image               | 设置或检索对象的边框样式使用图像来填充。                     | 3    |
-| border-image-outset        | 规定边框图像超过边框的量。                                   | 3    |
-| border-image-repeat        | 规定图像边框是否应该被重复（repeated）、拉伸（stretched）或铺满（rounded）。 | 3    |
-| border-image-slice         | 规定图像边框的向内偏移。                                     | 3    |
-| border-image-source        | 规定要使用的图像，代替 border-style 属性中设置的边框样式。   | 3    |
-| border-image-width         | 规定图像边框的宽度。                                         | 3    |
-| border-radius              | 设置或检索对象使用圆角边框。                                 | 3    |
-| border-top-left-radius     | 定义左上角边框的形状。                                       | 3    |
-| border-top-right-radius    | 定义右上角边框的形状。                                       | 3    |
-| box-decoration-break       | 规定行内元素被折行                                           | 3    |
-| box-shadow                 | 向方框添加一个或多个阴影。                                   | 3    |
+| 属性                       | 描述                                                         | CSS3? |
+| -------------------------- | ------------------------------------------------------------ | ----- |
+| **border**                 | 复合属性。<br />格式："border-width border-style border-color" （按顺序，但可以只有其中一部分） |       |
+| border-bottom              | 复合属性。设置对象底部边框的特性。                           |       |
+| border-bottom-color        | 设置或检索对象的底部边框颜色。                               |       |
+| border-bottom-style        | 设置或检索对象的底部边框样式。                               |       |
+| border-bottom-width        | 设置或检索对象的底部边框宽度。                               |       |
+| **border-color**           | 设置一个元素的四个边框颜色。<br />此属性可以有 **一到四** 个值 |       |
+| border-left                | 复合属性。设置对象左边边框的特性。                           |       |
+| border-left-color          | 设置或检索对象的左边边框颜色。                               |       |
+| border-left-style          | 设置或检索对象的左边边框样式。                               |       |
+| border-left-width          | 设置或检索对象的左边边框宽度。                               |       |
+| border-right               | 复合属性。设置对象右边边框的特性。                           |       |
+| border-right-color         | 设置或检索对象的右边边框颜色。                               |       |
+| border-right-style         | 设置或检索对象的右边边框样式。                               |       |
+| border-right-width         | 设置或检索对象的右边边框宽度。                               |       |
+| **border-style**           | 设置一个元素的四个边框的样式。此属性可以有 **一到四** 个值。<br />none：定义无边框。<br />hidden：与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突。<br />dotted：定义点状边框<br />dashed：定义虚线<br />solid：定义实线<br />double：定义双线<br />groove：定义 3D 凹槽边框<br />ridge：定义 3D 垄状边框<br />inset：定义 3D inset 边框<br />outset：定义 3D outset 边框 |       |
+| border-top                 | 复合属性。设置对象顶部边框的特性。                           |       |
+| border-top-color           | 设置或检索对象的顶部边框颜色                                 |       |
+| border-top-style           | 设置或检索对象的顶部边框样式。                               |       |
+| border-top-width           | 设置或检索对象的顶部边框宽度。                               |       |
+| **border-width**           | 设置一个元素的四个边框的宽度。此属性可以有 **一到四** 个值。<br />thin：细的边框<br />medium：默认，中等的边框<br />thick：粗的边框<br />长度：自定义边框的宽度 |       |
+| **outline**                | 复合属性。设置或检索对象外的线条轮廓。<br />**outline不占用空间，不会影响元素的尺寸和位置**<br />格式：”outline-color outline-style outline-width“ （按顺序，但可以只有其中一部分） |       |
+| **outline-color**          | 设置或检索对象外的线条轮廓的颜色。同border-color，但只有一个值。 |       |
+| **outline-style**          | 设置或检索对象外的线条轮廓的样式。同border-style，但只有一个值。 |       |
+| **outline-width**          | 设置或检索对象外的线条轮廓的宽度。同border-width，但只有一个值。 |       |
+| border-bottom-left-radius  | 设置或检索对象的左下角圆角边框。提供2个参数，2个参数以空格分隔，每个参数允许设置1个参数值，第1个参数表示水平半径，第2个参数表示垂直半径，如第2个参数省略，则默认等于第1个参数 | yes   |
+| border-bottom-right-radius | 设置或检索对象的右下角圆角边框。                             | yes   |
+| **border-image**           | 设置或检索对象的边框样式**使用图像来填充**。<br />格式：”border-source border-slice border-width border-outset border-repeat“（省略的值设置为它们的默认值） | yes   |
+| **border-image-outset**    | 规定边框图像超过边框的量。                                   | yes   |
+| **border-image-repeat**    | 规定图像边框是否应该被重复（repeated）、拉伸（stretched）或铺满（rounded）。 | yes   |
+| **border-image-slice**     | 规定图像边框的向内偏移。<br />此属性指定 上右下左 边缘的图像向内偏移，分为九个区域：四个角，四边和中间。图像中间部分将被丢弃（完全透明的处理），除非填写关键字。 | yes   |
+| **border-image-source**    | 规定要使用的图像，代替 border-style 属性中设置的边框样式。   | yes   |
+| **border-image-width**     | 规定图像边框的宽度。                                         | yes   |
+| **border-radius**          | 设置或检索对象使用圆角边框。                                 | yes   |
+| border-top-left-radius     | 定义左上角边框的形状。                                       | yes   |
+| border-top-right-radius    | 定义右上角边框的形状。                                       | yes   |
+| box-decoration-break       | 规定行内元素被折行                                           | yes   |
+| box-shadow                 | 向方框添加一个或多个阴影。                                   | yes   |
 
 ---
 
