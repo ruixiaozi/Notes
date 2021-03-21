@@ -19,5 +19,7 @@
 + [web前端优化之reflow(回流)和repaint(重绘)](./no15.md)
 + [CSS:nth-child选择器用法](./no16.md)
 + [html5中的audio和video属性和事件汇总](./no17.md)
-+ 
++ [居中问题](./no18.md)
++ [去除图片底侧空白缝隙](./no19.md)
++ [溢出文字省略号](./no20.md)
 

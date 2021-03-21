@@ -64,7 +64,7 @@
    }
    
    
-   /*以下是css新增*/
+   /*以下是css3新增*/
    
    /*class属性值以"test"开头的所有div元素*/
    div[class^="test"]
@@ -97,18 +97,17 @@
 
    | 属性          | 描述                                     | css3? |
    | ------------- | ---------------------------------------- | ----- |
-   | :active       | 向被激活的元素添加样式。                 |       |
-   | :focus        | 向拥有键盘输入焦点的元素添加样式。       |       |
-   | :hover        | 当鼠标悬浮在元素上方时，向元素添加样式。 |       |
-   | :link         | 向未被访问的链接添加样式。               |       |
-   | :visited      | 向已被访问的链接添加样式。               |       |
-   | :first-child  | 向元素的第一个子元素添加样式。           |       |
+   | **:active**   | 向被激活的元素添加样式。                 |       |
+   | **:focus**    | 向拥有键盘输入焦点的元素添加样式。       |       |
+   | **:hover**    | 当鼠标悬浮在元素上方时，向元素添加样式。 |       |
+   | **:link**     | 向未被访问的链接添加样式。               |       |
+   | **:visited**  | 向已被访问的链接添加样式。               |       |
    | :lang         | 向带有指定 lang 属性的元素添加样式。     |       |
    | :target       | 活动的元素                               | yes   |
    | :enabled      | 已经启用的元素                           | yes   |
    | :disabled     | 禁用的元素                               | yes   |
    | :checked      | 选中的元素                               | yes   |
-   | ::selection   | 选中或者处于高亮状态的元素               | yes   |
+   | :selection    | 选中或者处于高亮状态的元素               | yes   |
    | :out-of-range | 值在指定区间之外的input元素              | yes   |
    | :in-range     | 值在指定区间之内的input元素              | yes   |
    | :read-write   | 可读及可写的元素                         | yes   |
@@ -118,35 +117,46 @@
    | :valid        | 输入值为合法的元素                       | yes   |
    | :invalid      | 输入值为非法的元素                       | yes   |
 
+   | **:first-child**     | 每个（该元素，在其父元素中是第1个）        |      |
+   | -------------------- | ------------------------------------------ | ---- |
+   | :last-child          | 每个（该元素，在其父元素中是倒数第1个）    | yes  |
+   | :first-of-type       | 每个（第一个该元素，在其父元素中）         | yes  |
+   | :last-of-type        | 每个（最后一个该元素，在其父元素中）       | yes  |
+   | :only-of-type        | 每个（该元素，在其父元素中只有一个）       | yes  |
+   | :only-child          | 每个（该元素，在其父元素中有且仅有它一个） | yes  |
+   | :nth-child(n)        | 每个（该元素，在其父元素中是第n个）        | yes  |
+   | :nth-last-child(n)   | 每个（该元素，在其父元素中是倒数第n个）    | yes  |
+   | :nth-of-type(n)      | 每个（第n个该元素，在其父元素中）          | yes  |
+   | :nth-last-of-type(n) | 每个（倒数第n个该元素，在其父元素中）      | yes  |
+   | :root                | 文档根元素                                 | yes  |
+   | **:empty**           | 没有任何子元素(包括文本节点)的元素         | yes  |
+   | **:not(选择器)**     | 每个（并非选择器选中的元素）               | yes  |
+
+   
+
 7. **伪元素选择器**
 
    其基本语法格式如下：
 
+   在 CSS3 中，双冒号取代了伪元素的单冒号表示法。这是 W3C 试图区分*伪类*和*伪元素*的尝试。
+
+   在 CSS2 和 CSS1 中，伪类和伪元素都使用了单冒号语法。
+
+   为了向后兼容，CSS2 和 CSS1 伪元素可接受单冒号语法。
+
    ```css
-   :伪元素 {color: red;}
+   ::伪元素 {color: red;}
    ```
 
    其中伪元素有下列值：
 
-   | 属性                 | 描述                                       | 支持的css样式                                                | css3？ |
-   | -------------------- | ------------------------------------------ | ------------------------------------------------------------ | ------ |
-   | :first-letter        | 向文本的第一个字母添加特殊样式。           | font <br />color <br />background <br />word-spacing <br />letter-spacing <br />text-decoration <br />vertical-align <br />text-transform <br />line-height <br />clear |        |
-   | :first-line          | 向文本的首行添加特殊样式。                 | font <br />color <br />background <br />margin <br />padding <br />border <br />text-decoration <br />vertical-align (仅当 float 为 none 时) <br />text-transform <br />line-height <br />float <br />clear |        |
-   | :before              | 在元素之前添加内容。                       | 所有常见css样式<br />content （内容）                        |        |
-   | :after               | 在元素之后添加内容。                       | 所有常见css样式<br />content （内容）                        |        |
-   | :first-child         | 每个（该元素，在其父元素中是第1个）        |                                                              |        |
-   | :last-child          | 每个（该元素，在其父元素中是倒数第1个）    |                                                              | yes    |
-   | :first-of-type       | 每个（第一个该元素，在其父元素中）         |                                                              | yes    |
-   | :last-of-type        | 每个（最后一个该元素，在其父元素中）       |                                                              | yes    |
-   | :only-of-type        | 每个（该元素，在其父元素中只有一个）       |                                                              | yes    |
-   | :only-child          | 每个（该元素，在其父元素中有且仅有它一个） |                                                              | yes    |
-   | :nth-child(n)        | 每个（该元素，在其父元素中是第n个）        |                                                              | yes    |
-   | :nth-last-child(n)   | 每个（该元素，在其父元素中是倒数第n个）    |                                                              | yes    |
-   | :nth-of-type(n)      | 每个（第n个该元素，在其父元素中）          |                                                              | yes    |
-   | :nth-last-of-type(n) | 每个（倒数第n个该元素，在其父元素中）      |                                                              | yes    |
-   | :root                | 文档根元素                                 |                                                              | yes    |
-   | :empty               | 没有任何子元素(包括文本节点)的元素         |                                                              | yes    |
-   | :not(选择器)         | 每个（并非选择器选中的元素）               |                                                              | yes    |
+   | 属性           | 描述                             | 支持的css样式                                                | css3？ |
+   | -------------- | -------------------------------- | ------------------------------------------------------------ | ------ |
+   | ::first-letter | 向文本的第一个字母添加特殊样式。 | font <br />color <br />background <br />word-spacing <br />letter-spacing <br />text-decoration <br />vertical-align <br />text-transform <br />line-height <br />clear |        |
+   | ::first-line   | 向文本的首行添加特殊样式。       | font <br />color <br />background <br />margin <br />padding <br />border <br />text-decoration <br />vertical-align (仅当 float 为 none 时) <br />text-transform <br />line-height <br />float <br />clear |        |
+   | **::before**   | 在元素之前添加内容。             | 所有常见css样式<br />content （内容）                        |        |
+   | **::after**    | 在元素之后添加内容。             | 所有常见css样式<br />content （内容）                        |        |
+   | ::selection    | 选中或者处于高亮状态的元素       |                                                              |        |
 
 
 

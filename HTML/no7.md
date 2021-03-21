@@ -2,6 +2,23 @@
 
 ---
 
+## Table of contents
+- [1. 字体](#1. 字体)
+- [2. 文本](#2. 文本)
+- [3. 定位](#3. 定位)
+- [4. 背景](#4. 背景)
+- [5. 尺寸](#5. 尺寸)
+- [6. 内边距](#6. 内边距)
+- [7. 外边距](#7. 外边距)
+- [8. 边框与轮廓](#8. 边框与轮廓)
+- [9. 盒子属性](#9. 盒子属性)
+- [10. 列表](#10. 列表)
+- [11. 用户界面](#11. 用户界面)
+- [12. 表格属性](#12. 表格属性)
+- [License](#license)
+
+
+
 ### 1. 字体
 
 | 属性             | 说明                                                         | CSS3？ |
@@ -47,15 +64,15 @@
 | **bottom**     | 设置定位元素下外边距边界与其包含块下边界之间的偏移           |       |
 | **clear**      | 规定元素的哪一侧不允许其他浮动元素                           |       |
 | **clip**       | 剪裁绝对定位元素                                             |       |
-| **cursor**     | 规定要显示的光标的类型（形状）                               |       |
-| **display**    | 规定元素应该生成的框的显示类型<br />none：不显示<br />block：作为块级元素显示<br />inline：作为内链（行内）元素显示<br />inline-block：作为行内块元素显示<br />list-item：作为列表一项显示<br />table：作为块级表格显示（`<table>`）<br />inline-table：作为内链表格显示（`<table>`）<br />table-row-group：类似`<tbody>`<br />table-header-group：类似`<thead>`<br />table-footer-group：类似`<tfoot>`<br />table-row：类似`<tr>`<br />table-column-group：类似`<colgroup>`<br />table-column：类似`<col>`<br />table-cell：类似`<td>和<th>`<br />table-caption：类似`<caption>` |       |
+| **cursor**     | 规定要显示的光标的类型（形状）<br />**default**：小白  默认<br />**pointer**：小手<br />**move**：移动<br />**text**：文本<br />not-allowed：禁止 |       |
+| **display**    | 规定元素应该生成的框的显示类型<br />none：不显示（不占据原有位置）<br />block：作为块级元素显示<br />inline：作为内链（行内）元素显示<br />inline-block：作为行内块元素显示<br />list-item：作为列表一项显示<br />table：作为块级表格显示（`<table>`）<br />inline-table：作为内链表格显示（`<table>`）<br />table-row-group：类似`<tbody>`<br />table-header-group：类似`<thead>`<br />table-footer-group：类似`<tfoot>`<br />table-row：类似`<tr>`<br />table-column-group：类似`<colgroup>`<br />table-column：类似`<col>`<br />table-cell：类似`<td>和<th>`<br />table-caption：类似`<caption>` |       |
 | **float**      | 规定框是否应该浮动                                           |       |
 | **left**       | 设置定位元素左外边距边界与其包含块左边界之间的偏移           |       |
-| **overflow**   | 规定当内容溢出元素框时发生的事情                             |       |
+| **overflow**   | 规定当内容溢出元素框时发生的事情<br />**visible**（默认）：不剪切内容也不添加滚动条<br />**hidden**：不显示超过对象尺寸的内容，超出的部分隐藏掉<br />**scroll**：不管超出内容否，总是显示滚动条<br />**auto**：超出自动显示滚动条，不超出不显示滚动条 |       |
 | **position**   | 规定元素的定位类型                                           |       |
 | **right**      | 设置定位元素右外边距边界与其包含块右边界之间的偏移           |       |
 | **top**        | 设置定位元素的上外边距边界与其包含块上边界之间的偏移         |       |
-| **visibility** | 规定元素是否可见                                             |       |
+| **visibility** | 规定元素是否可见（隐藏时，还是占据原有位置）<br />visible：显示<br />hidden：隐藏 |       |
 | **z-index**    | 设置元素的堆叠顺序                                           |       |
 
 ---
@@ -137,7 +154,7 @@
 | border-top-style           | 设置或检索对象的顶部边框样式。                               |       |
 | border-top-width           | 设置或检索对象的顶部边框宽度。                               |       |
 | **border-width**           | 设置一个元素的四个边框的宽度。此属性可以有 **一到四** 个值。<br />thin：细的边框<br />medium：默认，中等的边框<br />thick：粗的边框<br />长度：自定义边框的宽度 |       |
-| **outline**                | 复合属性。设置或检索对象外的线条轮廓。<br />**outline不占用空间，不会影响元素的尺寸和位置**<br />格式：”outline-color outline-style outline-width“ （按顺序，但可以只有其中一部分） |       |
+| **outline**                | 复合属性。设置或检索对象外的线条轮廓。（输入框这些）<br />**outline不占用空间，不会影响元素的尺寸和位置**<br />格式：”outline-color outline-style outline-width“ （按顺序，但可以只有其中一部分） |       |
 | **outline-color**          | 设置或检索对象外的线条轮廓的颜色。同border-color，但只有一个值。 |       |
 | **outline-style**          | 设置或检索对象外的线条轮廓的样式。同border-style，但只有一个值。 |       |
 | **outline-width**          | 设置或检索对象外的线条轮廓的宽度。同border-width，但只有一个值。 |       |
@@ -153,7 +170,7 @@
 | border-top-left-radius     | 定义左上角边框的形状。                                       | yes   |
 | border-top-right-radius    | 定义右上角边框的形状。                                       | yes   |
 | box-decoration-break       | 规定行内元素被折行                                           | yes   |
-| box-shadow                 | 向方框添加一个或多个阴影。                                   | yes   |
+| box-shadow                 | 向方框添加一个或多个阴影。<br />box-shadow:水平阴影 垂直阴影 模糊距离（虚实）  阴影尺寸（影子大小）  阴影颜色  内/外阴影；<br />/* box-shadow: 5px 5px 3px 4px rgba(0, 0, 0, .4);  */<br/>			/* box-shadow:水平位置 垂直位置 模糊距离 阴影尺寸（影子大小） 阴影颜色  内/外阴影； */ | yes   |
 
 ---
 
@@ -193,9 +210,19 @@
 | nav-right      | 指定用户按向右键时向左导航的位置         | 3    |
 | nav-up         | 指定用户按向上键时向上导航的位置a        | 3    |
 | outline-offset | 设置轮廓框架在 border 边缘外的偏移       | 3    |
-| resize         | 定义元素是否可以改变大小                 | 3    |
+| **resize**     | 定义元素是否可以改变大小                 | 3    |
 
 
+
+### 12. 表格属性
+
+| 属性            | 说明                                       | CSS  |
+| --------------- | ------------------------------------------ | ---- |
+| border-collapse | 规定是否合并表格边框                       | 2    |
+| border-spacing  | 规定相邻单元格边框之间的距离               | 2    |
+| caption-side    | 规定表格标题的位置                         | 2    |
+| empty-cells     | 规定是否显示表格中的空单元格上的边框和背景 | 2    |
+| table-layout    | 设置用于表格的布局算法                     | 2    |
 
 
 

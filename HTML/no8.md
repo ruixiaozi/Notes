@@ -6,32 +6,41 @@
 
 所谓盒子模型：
 
-- 就是把HTML页面中的布局元素看作是一个矩形的盒子，也就是一个盛装内容的容器。
+- 就是把HTML页面中的布局**元素**看作是一个矩形的**盒子**，也就是一个盛装内容的容器。
 
   ![盒子模型](./img/boxmode.png)
 
   ![多个盒子](./img/boxs.png)
 
-
+* 盒子模型有元素的内容、边框（border）、内边距（padding）、和外边距（margin）组成。
+* 盒子里面的文字和图片等元素是 内容区域
+* 盒子的厚度 我们成为 盒子的边框 
+* 盒子内容与边框的距离是内边距（类似单元格的 cellpadding)
+* 盒子与盒子之间的距离是外边距（类似单元格的 cellspacing）
 
 ---
 
-### 2. 尺寸计算
+### 2. 尺寸计算（重要）
 
 计算公式为：
 
-```
-//默认情况下
-元素最终尺寸 = width/height + padding + border
-//当box-sizing为border-box时
-内容尺寸 = width/height - padding - border
-```
+#### 一、默认情况下
+
+
+**元素最终尺寸 = width/height + padding + border**
+
+
+
+#### 二、box-sizing为 border-box 时
+
+**元素最终尺寸 = width/height**
+**内容尺寸 = width/height - padding - border**
 
 
 
 ---
 
-### 3. 水平居中
+### 3. 水平居中（可见前端面试问题 居中问题）
 
 1. 盒子内的文字水平居中是  text-align: center,  而且还可以让 行内元素和行内块居中对齐
 
