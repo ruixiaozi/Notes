@@ -117,20 +117,23 @@
    | :valid        | 输入值为合法的元素                       | yes   |
    | :invalid      | 输入值为非法的元素                       | yes   |
 
-   | **:first-child**     | 每个（该元素，在其父元素中是第1个）        |      |
-   | -------------------- | ------------------------------------------ | ---- |
-   | :last-child          | 每个（该元素，在其父元素中是倒数第1个）    | yes  |
-   | :first-of-type       | 每个（第一个该元素，在其父元素中）         | yes  |
-   | :last-of-type        | 每个（最后一个该元素，在其父元素中）       | yes  |
-   | :only-of-type        | 每个（该元素，在其父元素中只有一个）       | yes  |
-   | :only-child          | 每个（该元素，在其父元素中有且仅有它一个） | yes  |
-   | :nth-child(n)        | 每个（该元素，在其父元素中是第n个）        | yes  |
-   | :nth-last-child(n)   | 每个（该元素，在其父元素中是倒数第n个）    | yes  |
-   | :nth-of-type(n)      | 每个（第n个该元素，在其父元素中）          | yes  |
-   | :nth-last-of-type(n) | 每个（倒数第n个该元素，在其父元素中）      | yes  |
-   | :root                | 文档根元素                                 | yes  |
-   | **:empty**           | 没有任何子元素(包括文本节点)的元素         | yes  |
-   | **:not(选择器)**     | 每个（并非选择器选中的元素）               | yes  |
+   - `nth-child`  选择父元素里面的第几个子元素，不管是第几个类型
+   - `nt-of-type`  选择指定类型的元素
+
+   | E**:first-child**     | 每个（在其父元素E中是第1个）                                 |      |
+   | --------------------- | ------------------------------------------------------------ | ---- |
+   | E:last-child          | 每个（在其父元素中E是倒数第1个）                             | yes  |
+   | E:first-of-type       | 每个（第一个元素E，在其父元素中）                            | yes  |
+   | E:last-of-type        | 每个（最后一个元素E，在其父元素中）                          | yes  |
+   | E:only-of-type        | 每个（在其父元素E中只有一个）                                | yes  |
+   | E:only-child          | 每个（在其父元素E中有且仅有它一个）                          | yes  |
+   | E:nth-child(n)        | 每个（在其父元素E中是第n个）<br />注意：本质上就是选中第几个子元素<br />n 可以是数字、关键字、公式<br />n 如果是数字，就是选中第几个<br />常见的关键字有 `even` 偶数、`odd` 奇数<br />常见的公式如下(如果 n 是公式，则从 0 开始计算)<br />但是第 0 个元素或者超出了元素的个数会被忽略 | yes  |
+   | E:nth-last-child(n)   | 每个（在其父元素E中是倒数第n个）<br />同上                   | yes  |
+   | E:nth-of-type(n)      | 每个（第n个元素E，在其父元素中）<br />同上                   | yes  |
+   | E:nth-last-of-type(n) | 每个（倒数第n个元素E，在其父元素中）<br />同上               | yes  |
+   | :root                 | 文档根元素                                                   | yes  |
+   | **:empty**            | 没有任何子元素(包括文本节点)的元素                           | yes  |
+   | **:not(选择器)**      | 每个（并非选择器选中的元素）                                 | yes  |
 
    
 
@@ -154,8 +157,8 @@
    | -------------- | -------------------------------- | ------------------------------------------------------------ | ------ |
    | ::first-letter | 向文本的第一个字母添加特殊样式。 | font <br />color <br />background <br />word-spacing <br />letter-spacing <br />text-decoration <br />vertical-align <br />text-transform <br />line-height <br />clear |        |
    | ::first-line   | 向文本的首行添加特殊样式。       | font <br />color <br />background <br />margin <br />padding <br />border <br />text-decoration <br />vertical-align (仅当 float 为 none 时) <br />text-transform <br />line-height <br />float <br />clear |        |
-   | **::before**   | 在元素之前添加内容。             | 所有常见css样式<br />content （内容）                        |        |
-   | **::after**    | 在元素之后添加内容。             | 所有常见css样式<br />content （内容）                        |        |
+   | **::before**   | 在元素之前添加内容。             | 所有常见css样式<br />content （必须）                        |        |
+   | **::after**    | 在元素之后添加内容。             | 所有常见css样式<br />content （必须）                        |        |
    | ::selection    | 选中或者处于高亮状态的元素       |                                                              |        |
 
 
