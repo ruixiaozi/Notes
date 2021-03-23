@@ -35,7 +35,7 @@
 | 类型 | 格式 |
 | :--- | :--- |
 | 单语句 | 表达式; |
-| 块语句 | { 单语句…… }
+| 块语句 | { 单语句…… } |
 | 条件 | if (条件) 语句 else 语句 |
 | do循环 | do { 语句 } while (条件) |
 | while循环 | while (条件) 语句 |
@@ -46,7 +46,7 @@
 | continue语句 | continue; 或者 continue 标签名; |
 | with对象空间 | with (对象) 语句 |
 | switch选择(全等模式) | switch (表达式) { case 表达式: 语句 …… default: 语句} |
- 
+
 
 ---
 

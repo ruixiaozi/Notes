@@ -2,7 +2,7 @@
 ---
 ### 1. 数据类型
 
-&emsp;&emsp;ECMAScript有5种基本数据类型：`Undefined` , `Null` , `Boolean` , `Number` , `String` 。还有1种复杂数据类型（引用类型）：`Object`。所有值都是这6种数据类型其中之一。
+&emsp;&emsp;ECMAScript有6种基本数据类型：`Undefined` , `Null` , `Boolean` , `Number` , `String` , ` Symbol`。还有1种复杂数据类型（引用类型）：`Object`。所有值都是这6种数据类型其中之一。
 
 &emsp;&emsp;可以使用 `typeof` 操作符来检测变量的数据类型。对一个值使用 `typeof` 操作符可以返回以下字符串之一（操作符后可用括号，但不是必须，返回的字符串和上述数据类型不一定一样）：
 + "undefined"：未定义
@@ -11,65 +11,151 @@
 + "number"：数值
 + "object": 对象或者**null**
 + "function"：函数
++ "symbol"：表示值为符号。
 
 &emsp;&emsp;以下对各个类型进行说明：
-1. Undefined 类型  
-    Undefined类型只有一个值就是：`undefined`，未初始化的变量默认值为它。主要用于比较一个变量是不是该值。**最好使用 `typeof` 操作符**。
-2. Null 类型  
-    Null类型也只有一个值就是：`null`，但是在使用 `typeof` 操作符的时候会返回 "object" 字符串。需要注意，所以在一个变量将来要用做保存对象的时候，可以先给这个变量初始化为 `null` 值，这样检测的时候就知道是对象变量了。**`undefined` 值派生自 `null`，但是用途不同**。
+#### 1. **Undefined 类型 ** 
+Undefined类型只有一个值就是：`undefined`，未初始化的变量默认值为它。主要用于比较一个变量是不是该值。**最好使用 `typeof` 操作符（未定义的变量使用会报错，但是对未定义的变量执行 typeof操作返回undefined）**。undefined 是一个假值。
+
+#### 2. **Null 类型**  
+
+Null类型也只有一个值就是：`null`，但是在**使用 `typeof` 操作符的时候会返回 "object" 字符串**。需要注意，所以在一个变量将来要用做保存对象的时候，可以先给这个变量初始化为 `null` 值，这样检测的时候就知道是对象变量了。**`undefined` 值派生自 `null`，但是用途不同**。null 是一个假值。
+
 3. Boolean 类型  
     Boolean类型只有两个值：`true` 和 `false`。需要注意的是：这两个值与数字 `1` 和 `0` 不相等，但是可以使用转型函数 `Boolean()`将其他类型转换到对应的布尔值，在某些需要编程 `Boolean` 类型的情况中会被自动转换。下面是转换规则：
+    
     | 数据类型 | true | false |
     | :------ | :---- | :---- |
     | String | 非空字符串 | "" |
     | Number | 非零数值 | 0和NaN |
     | Object | 任何对象 | null |
     | Undefined | (没有真值) | undefined |
-4. Number 类型  
-    Number类型使用IEEE754格式来表示整数和浮点数。  
-    1. 对于整数数值字面量，整数八进制第一位必须是零 `0` ，整数十六进制前两位必须是零x `0x` 。如果八进制后面的数值超出了进制范围，就被当做10进制数。
-    2. 对于浮点数字面量，如果是一个整数大小，那么就解析为整数，而不是以浮点数的形式，最高精度为17位小数。可以使用科学计数法，用一个大写或者小写的E在中间表示乘10的n次方。
-    3. 特殊值列表：
-        | 特殊值 | 含义 |
-        | :---- | :---- |
-        | Number.MIN_VALUE | 最小数值（一般为 5e-324） |
-        | Number.MAX_VALUE | 最大数值（一般为 1.7976931348623157e+308） |
-        | Infinity | 无穷大（超出上述范围。**它不能参与运算**） |
-        | Number.NEGATIVE_INFINITY | 正无穷大 |
-        | Number.POSITIVE_INFINITY | 负无穷大 |
-        | NaN | 非数值（无法返回或转换成数值，如数值除以0，且它参与运算返回NaN） |
-        可以使用 `isFinite()` 方法判断一个数值是否在规定范围内，在就返回 `true` ，否则返回 `false` 。  
-        `NaN` 不与任何值相等，只能通过 `isNaN()` 方法来判断。
-    4. 转型函数
-        + Number()  
-            用于任何类型。规则如下：
-            + Boolean类型，true和false对应1和0
-            + null值，转换为0
-            + undefined值，转换为NaN
-            + String类型，又需要以下规则：
-                + 只包含数字和小数点，转换为十进制数值
-                + 只包含有效十六进制格式，转换成对应的数值
-                + 空串""，转换为0
-                + 其他格式，转换为NaN
-            + Object类型，调用对象的 `valueOf()` 方法，然后对返回值按上述方法进行转换，如果结果是 `NaN` ,则再调用对象的 `toString()` 方法，再对返回值按上述方法进行转换。
-        + parseInt()  
-            只用于字符串。忽略字符串的前导空格，直到第一个非空格字符。如果第一个字符不是数字或负号，则返回 `NaN` ，如果是着继续解析，直到不是为止。  
-            对于非十进制格式，可以使用 `parseInt(String str,Number decimal)` 方法，第一个参数还是字符串，第二个参数是表示进制的数值。
-        + parseFloat()  
-            只用于字符串。规则与 `parseInt()` 基本相同，对于不包含小数的会返回整数，但是该方法**只支持十进制**，所以对于十进制转换可以统一使用该方法。
-        + **注意：还可以使用一元运算符 `+` 来用做与 `Number()` 相同的功能**
-5. String 类型  
-    String类型用于表示Unicode字符组成的字符序列，既可以使用单引号 `'` ，也可以使用双引号 `"` 包裹字符序列。  
-    对于转型函数有两种：
-    1. 数值、布尔值、对象和字符串的 `toString()` 方法  
-        会返回一个字符串副本，如果是数值，可以指定一个数值参数，该参数指明进制的数值。
-    2. String()  
-        它的转换规则如下：
-        + 如果有 `toString()` 方法，调用它
-        + 如果是 `null` 值，则返回 `"null"`
-        + 如果是 `undefined` 值，则返回 `"undefined"`
-    3. **注意：可以使用链接字符串运算符 `+` 将其与空串 `""` 链接，效果与 `String()` 相同**
-6. Object 类型  
+
+#### 3.Number 类型  
+
+Number类型使用IEEE754格式来表示整数和浮点数。  
+
+1. 对于整数数值字面量，整数**八进制**第一位必须是零 `0` ，整数**十六进制**前两位必须是零x `0x` 。如果八进制后面的数值超出了进制范围，就被当做10进制数。
+2. 对于浮点数字面量，如果是一个整数大小，那么就解析为整数，而不是以浮点数的形式，最高精度为17位小数。可以使用科学计数法，用一个大写或者小写的E在中间表示乘10的n次方。
+3. 特殊值列表：
+    | 特殊值 | 含义 |
+    | :---- | :---- |
+    | Number.MIN_VALUE | 最小数值（一般为 5e-324） |
+    | Number.MAX_VALUE | 最大数值（一般为 1.7976931348623157e+308） |
+    | Infinity | 无穷大（超出上述范围。**它不能参与运算**） |
+    | Number.NEGATIVE_INFINITY | 正无穷大 |
+    | Number.POSITIVE_INFINITY | 负无穷大 |
+    | NaN | 非数值（无法返回或转换成数值，如数值除以0，且它参与运算返回NaN） |
+    可以使用 `isFinite()` 方法判断一个数值是否在规定范围内（是否有限大），在就返回 `true` ，否则返回 `false` 。  
+    `NaN` 不与任何值相等，只能通过 `isNaN()` 方法来判断。
+4. **转型函数**
+   
+    + **Number()  **
+        用于任何类型。规则如下：
+        + Boolean类型，true和false对应1和0
+        + null值，转换为0
+        + undefined值，转换为NaN
+        + String类型，又需要以下规则：
+            + 只包含数字和小数点，转换为十进制数值
+            + 只包含有效十六进制格式，转换成对应的数值
+            + 空串""，转换为0
+            + 其他格式 ( 只要有非上述3钟的字符 )，转换为NaN
+        + Object类型，调用对象的 `valueOf()` 方法，然后对返回值按上述方法进行转换，如果结果是 `NaN` ,则再调用对象的 `toString()` 方法，再对返回值按上述方法进行转换。
+    + **parseInt() ** 
+        只用于字符串。忽略字符串的前导空格，直到第一个非空格字符。如果第一个字符不是数字或负号，则返回 `NaN` ，如果是着继续解析，直到不是为止。  
+        对于非十进制格式，可以使用 `parseInt(String str,Number decimal)` 方法，第一个参数还是字符串，第二个参数是表示进制的数值。
+    + **parseFloat()**  
+        只用于字符串。规则与 `parseInt()` 基本相同，对于不包含小数的会返回整数，但是该方法**只支持十进制**，所以对于十进制转换可以统一使用该方法。
+    + **注意：还可以使用一元运算符 `+` 来用做与 `Number()` 相同的功能**
+
+#### 4.String 类型  
+
+String类型用于表示Unicode字符组成的字符序列，既可以使用单引号 `'` ，也可以使用双引号 `"` 包裹字符序列。  
+对于转型函数有两种：
+
+1. 数值、布尔值、对象和字符串的 `toString()` 方法  
+    会返回一个字符串副本，如果是数值，可以指定一个数值参数，该参数指明进制的数值。
+    
+2. String()  
+    它的转换规则如下：
+    
+    + 如果有 `toString()` 方法，调用它
+    + 如果是 `null` 值，则返回 `"null"`
+    + 如果是 `undefined` 值，则返回 `"undefined"`
+    
+3. **注意：可以使用链接字符串运算符 `+` 将其与空串 `""` 链接，效果与 `String()` 相同**
+
+4. **模板字面量（ES6）**：
+
+    ECMAScript 6 新增了使用模板字面量定义字符串的能力(使用反引号)。与使用单引号或双引号不同，模板字面量 保留换行字符，可以跨行定义字符串:
+
+    ```
+     let myMultiLineTemplateLiteral = `first line
+        second line`;
+    ```
+
+    **1.字符串插值：**
+
+    模板字面量在定义时**立即求值并转换为字符串**实例，任何插入的变量也会从它们最接近的作 用域中取值。
+
+    **字符串插值通过在${}中使用一个 JavaScript 表达式实现**
+
+    ```
+    // 现在，可以用模板字面量这样实现: 12 
+    let interpolatedTemplateLiteral = `${ value } to the ${ exponent } power is ${ value * value }`;
+    ```
+
+    **2.标签函数：**
+
+    模板字面量也支持定义标签函数(tag function)，而通过标签函数可以自定义插值行为。标签函数 会接收被插值记号分隔后的模板和对每个表达式求值的结果。
+
+    标签函数本身是一个常规函数，通过前缀到模板字面量来应用自定义行为，如下例所示。标签函数 接收到的参数依次是**原始字符串数组**和对**每个表达式求值的结果**。这个函数的返回值是对模板字面量求 值得到的字符串。
+
+    ```
+    let a = 6;
+    let b = 9;
+    function simpleTag(strings, aValExpression, bValExpression, sumExpression) { 
+    	console.log(strings);
+    	console.log(aValExpression);
+    	console.log(bValExpression);
+      console.log(sumExpression);
+      return 'foobar';
+    }
+    let untaggedResult = `${ a } + ${ b } = ${ a + b }`;
+    let taggedResult = simpleTag`${ a } + ${ b } = ${ a + b }`;
+    // ["", " + ", " = ", ""]
+    // 6
+    // 9
+    // 15
+    console.log(untaggedResult);
+    console.log(taggedResult);
+    // "6 + 9 = 15"
+    // "foobar"
+    ```
+
+    通常应该使用剩余操作符(rest operator)将它们收集到一个 数组。
+
+    ```
+    let a = 6;
+    let b = 9;
+    function simpleTag(strings, ...expressions) {
+      console.log(strings);
+      for(const expression of expressions) {
+        console.log(expression);
+      }
+      return 'foobar';
+    }
+    let taggedResult = simpleTag`${ a } + ${ b } = ${ a + b }`;
+    // ["", " + ", " = ", ""]
+    // 6
+    // 9
+    // 15
+    console.log(taggedResult);  // "foobar"
+    ```
+
+    
+
+5. Object 类型  
     对象就是一组数据和功能的集合，可以创建 `Object` 类型的实例并添加属性和方法，就可以创建自定义对象。Object的每个实例都具有下列属性和方法：
     + constructor  
         指向构造函数。

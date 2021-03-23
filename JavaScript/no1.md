@@ -5,10 +5,14 @@
 &emsp;&emsp;一个完整的JavaScript实现由三部分组成:  
 + 核心(ECMAScript)  
     ECMAScript 与Web浏览器没有依赖关系，只定义来这门语言的基础。
+    
 + 文档对象模型(DOM)  
     DOM是针对XML但经过扩展用于HTML的API。DOM把整个页面映射为一个
+    
 + 浏览器对象模型(BOM)  
     开发人员使用BOM可以控制浏览器显示的页面以外的部分
+    
+    ![](./img/图片11.png)
 
 ---
 ### 2. HTML的文档模式
@@ -43,7 +47,7 @@
         ```
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" 
         "http://www.w3.org/TR/html4/frameset.dtd">
-        ``` 
+        ```
         等同于 HTML 4.01 过度型，但允许框架集内容
 
 ---
