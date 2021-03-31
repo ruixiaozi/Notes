@@ -11,6 +11,7 @@
 
 + [HTML+CSS学习笔记 (进行中)](./HTML)
 + [JavaScript学习笔记 (进行中)](./JavaScript)
++ [Echarts学习笔记 (进行中)](./Echarts)
 + JQuery学习笔记 (计划中)
 + LESS学习笔记 (计划中)
 + Node.js学习笔记 (计划中)
@@ -20,13 +21,17 @@
 + Electron学习笔记 (计划中)
 + [前端面试学习笔记](./前端面试错题集)
 
+### 数据库
+
++ [MySQL基础学习笔记 (暂停)](./Mysql)
++ [MySQL高级学习笔记 (暂停)](./MysqlAD)
++ [PostgreSQL学习笔记 (进行中)](./PostgreSQL)
+
 ### java系
 
 + [Java学习笔记 (暂停)](./Java)
 + [JVM学习笔记 (暂停)](./JVM)
 + [Spring学习笔记 (暂停)](./Spring)
-+ [MySQL基础学习笔记 (暂停)](./Mysql)
-+ [MySQL高级学习笔记 (暂停)](./MysqlAD)
 + [Java数据结构与算法 (暂停)](./JavaStruct)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
