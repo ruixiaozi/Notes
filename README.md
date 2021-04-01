@@ -13,12 +13,13 @@
 + [JavaScript学习笔记 (进行中)](./JavaScript)
 + [Echarts学习笔记 (进行中)](./Echarts)
 + JQuery学习笔记 (计划中)
-+ LESS学习笔记 (计划中)
++ SASS/LESS学习笔记 (计划中)
 + Node.js学习笔记 (计划中)
 + webpack学习笔记 (计划中)
 + MockJS学习笔记 (计划中)
 + [Vue全家桶学习笔记 (进行中)](./Vue)
 + Electron学习笔记 (计划中)
++ VSCode学习笔记 (计划中)
 + [前端面试学习笔记](./前端面试错题集)
 
 ### 数据库
@@ -26,6 +27,11 @@
 + [MySQL基础学习笔记 (暂停)](./Mysql)
 + [MySQL高级学习笔记 (暂停)](./MysqlAD)
 + [PostgreSQL学习笔记 (进行中)](./PostgreSQL)
+
+### .Net系
+
++ C#学习笔记 (计划中)
++ .net code学习笔记 (计划中)
 
 ### java系
 
