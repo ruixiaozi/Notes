@@ -151,7 +151,242 @@ CREATE TABLE sal_emp (
 );
 ```
 
+#### 插入值
 
+插入值使用花括号 {}，元素在 {} 使用逗号隔开：
+
+```
+INSERT INTO sal_emp
+    VALUES ('Bill',
+    '{10000, 10000, 10000, 10000}',
+    '{{"meeting", "lunch"}, {"training", "presentation"}}');
+
+INSERT INTO sal_emp
+    VALUES ('Carol',
+    '{20000, 25000, 25000, 25000}',
+    '{{"breakfast", "consulting"}, {"meeting", "lunch"}}');
+```
+
+#### 访问数组
+
+现在我们可以在这个表上运行一些查询。
+
+首先，我们演示如何访问数组的一个元素。 这个查询检索在第二季度薪水变化的雇员名：
+
+```
+SELECT name FROM sal_emp WHERE pay_by_quarter[1] <> pay_by_quarter[2];
+
+ name
+-------
+ Carol
+(1 row)
+```
+
+数组的下标数字是写在方括弧内的。
+
+#### 修改数组
+
+我们可以对数组的值进行修改：
+
+```
+UPDATE sal_emp SET pay_by_quarter = '{25000,25000,27000,27000}'
+    WHERE name = 'Carol';
+```
+
+或者使用 ARRAY 构造器语法：
+
+```
+UPDATE sal_emp SET pay_by_quarter = ARRAY[25000,25000,27000,27000]
+    WHERE name = 'Carol';
+```
+
+#### 数组中检索
+
+要搜索一个数组中的数值，你必须检查该数组的每一个值。
+
+比如：
+
+```
+SELECT * FROM sal_emp WHERE pay_by_quarter[1] = 10000 OR
+                            pay_by_quarter[2] = 10000 OR
+                            pay_by_quarter[3] = 10000 OR
+                            pay_by_quarter[4] = 10000;
+```
+
+另外，你可以用下面的语句找出数组中所有元素值都等于 10000 的行：
+
+```
+SELECT * FROM sal_emp WHERE 10000 = ALL (pay_by_quarter);
+```
+
+或者，可以使用 generate_subscripts 函数。例如：
+
+```
+SELECT * FROM
+   (SELECT pay_by_quarter,
+           generate_subscripts(pay_by_quarter, 1) AS s
+      FROM sal_emp) AS foo
+ WHERE pay_by_quarter[s] = 10000;
+```
+
+### 14 .复合类型
+
+复合类型表示一行或者一条记录的结构； 它实际上只是一个字段名和它们的数据类型的列表。PostgreSQL 允许像简单数据类型那样使用复合类型。比如，一个表的某个字段可以声明为一个复合类型。
+
+#### 声明复合类型
+
+下面是两个定义复合类型的简单例子：
+
+```
+CREATE TYPE complex AS (
+    r       double precision,
+    i       double precision
+);
+
+CREATE TYPE inventory_item AS (
+    name            text,
+    supplier_id     integer,
+    price           numeric
+);
+```
+
+语法类似于 CREATE TABLE，只是这里只可以声明字段名字和类型。
+
+定义了类型，我们就可以用它创建表：
+
+```
+CREATE TABLE on_hand (
+    item      inventory_item,
+    count     integer
+);
+
+INSERT INTO on_hand VALUES (ROW('fuzzy dice', 42, 1.99), 1000);
+```
+
+#### 复合类型值输入
+
+要以文本常量书写复合类型值，在圆括弧里包围字段值并且用逗号分隔他们。 你可以在任何字段值周围放上双引号，如果值本身包含逗号或者圆括弧， 你必须用双引号括起。
+
+复合类型常量的一般格式如下：
+
+```
+'( val1 , val2 , ... )'
+```
+
+一个例子是:
+
+```
+'("fuzzy dice",42,1.99)'
+```
+
+#### 访问复合类型
+
+要访问复合类型字段的一个域，我们写出一个点以及域的名字， 非常类似从一个表名字里选出一个字段。实际上，因为实在太像从表名字中选取字段， 所以我们经常需要用圆括弧来避免分析器混淆。比如，你可能需要从on_hand 例子表中选取一些子域，像下面这样：
+
+```
+SELECT item.name FROM on_hand WHERE item.price > 9.99;
+```
+
+这样将不能工作，因为根据 SQL 语法，item是从一个表名字选取的， 而不是一个字段名字。你必须像下面这样写：
+
+```
+SELECT (item).name FROM on_hand WHERE (item).price > 9.99;
+```
+
+或者如果你也需要使用表名字(比如，在一个多表查询里)，那么这么写：
+
+```
+SELECT (on_hand.item).name FROM on_hand WHERE (on_hand.item).price > 9.99;
+```
+
+现在圆括弧对象正确地解析为一个指向item字段的引用，然后就可以从中选取子域。
+
+### 15. 范围类型
+
+范围数据类型代表着某一元素类型在一定范围内的值。
+
+例如，timestamp 范围可能被用于代表一间会议室被预定的时间范围。
+
+PostgreSQL 内置的范围类型有：
+
+- int4range — integer的范围
+- int8range —bigint的范围
+- numrange —numeric的范围
+- tsrange —timestamp without time zone的范围
+- tstzrange —timestamp with time zone的范围
+- daterange —date的范围
+
+此外，你可以定义你自己的范围类型。
+
+```
+CREATE TABLE reservation (room int, during tsrange);
+INSERT INTO reservation VALUES
+    (1108, '[2010-01-01 14:30, 2010-01-01 15:30)');
+
+-- 包含
+SELECT int4range(10, 20) @> 3;
+
+-- 重叠
+SELECT numrange(11.1, 22.2) && numrange(20.0, 30.0);
+
+-- 提取上边界
+SELECT upper(int8range(15, 25));
+
+-- 计算交叉
+SELECT int4range(10, 20) * int4range(15, 25);
+
+-- 范围是否为空
+SELECT isempty(numrange(1, 5));
+```
+
+范围值的输入必须遵循下面的格式：
+
+```
+(下边界,上边界)
+(下边界,上边界]
+[下边界,上边界)
+[下边界,上边界]
+空
+```
+
+圆括号或者方括号显示下边界和上边界是不包含的还是包含的。注意最后的格式是 空，代表着一个空的范围（一个不含有值的范围）。
+
+```
+-- 包括3，不包括7，并且包括二者之间的所有点
+SELECT '[3,7)'::int4range;
+
+-- 不包括3和7，但是包括二者之间所有点
+SELECT '(3,7)'::int4range;
+
+-- 只包括单一值4
+SELECT '[4,4]'::int4range;
+
+-- 不包括点（被标准化为‘空’）
+SELECT '[4,4)'::int4range;
+```
+
+### 16. 伪类型
+
+PostgreSQL类型系统包含一系列特殊用途的条目， 它们按照类别来说叫做伪类型。伪类型不能作为字段的数据类型， 但是它可以用于声明一个函数的参数或者结果类型。 伪类型在一个函数不只是简单地接受并返回某种SQL 数据类型的情况下很有用。
+
+下表列出了所有的伪类型：
+
+| 名字             | 描述                                               |
+| :--------------- | :------------------------------------------------- |
+| any              | 表示一个函数接受任何输入数据类型。                 |
+| anyelement       | 表示一个函数接受任何数据类型。                     |
+| anyarray         | 表示一个函数接受任意数组数据类型。                 |
+| anynonarray      | 表示一个函数接受任意非数组数据类型。               |
+| anyenum          | 表示一个函数接受任意枚举数据类型。                 |
+| anyrange         | 表示一个函数接受任意范围数据类型。                 |
+| cstring          | 表示一个函数接受或者返回一个空结尾的 C 字符串。    |
+| internal         | 表示一个函数接受或者返回一种服务器内部的数据类型。 |
+| language_handler | 一个过程语言调用处理器声明为返回language_handler。 |
+| fdw_handler      | 一个外部数据封装器声明为返回fdw_handler。          |
+| record           | 标识一个函数返回一个未声明的行类型。               |
+| trigger          | 一个触发器函数声明为返回trigger。                  |
+| void             | 表示一个函数不返回数值。                           |
+| opaque           | 一个已经过时的类型，以前用于所有上面这些用途。     |
 
 ---
 
