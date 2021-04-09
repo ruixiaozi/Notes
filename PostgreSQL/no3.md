@@ -210,7 +210,11 @@ create table table_name(
 DROP TABLE my_first_table;
 ```
 
+TRUNCATE TABLE 删除，语法如下：
 
+```
+TRUNCATE TABLE  table_name;
+```
 
 ### 4. 修改表格
 
