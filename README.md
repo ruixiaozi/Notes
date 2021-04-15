@@ -31,7 +31,7 @@
 ### .Net系
 
 + C#学习笔记 (计划中)
-+ .net code学习笔记 (计划中)
++ [.net core学习笔记 (计划中)](./NetCore)
 
 ### java系
 
