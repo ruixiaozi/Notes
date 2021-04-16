@@ -30,8 +30,8 @@
 
 ### .Net系
 
-+ C#学习笔记 (计划中)
-+ [.net core学习笔记 (计划中)](./NetCore)
++ [C#学习笔记 (进行中)](./Csharp)
++ [.net core学习笔记 (进行中)](./NetCore)
 
 ### java系
 
