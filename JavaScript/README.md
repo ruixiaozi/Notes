@@ -3,6 +3,7 @@
 
 + [概述](./conception.md) 
 + [web前端研发工程师编程能力成长之路](./future.md)
++ [JS注释规范](./annotation.md)
 + [基本概念](./no1.md)
 + [变量与数据类型](./no2.md)
 + [操作符与语句](./no3.md)
