@@ -15,4 +15,5 @@
 + 对象的深入理解
 + 创建自定义对象的七大模式
 + 继承
++ map/reduce/split/filter
 
