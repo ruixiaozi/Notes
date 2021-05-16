@@ -18,6 +18,7 @@
 + webpack学习笔记 (计划中)
 + MockJS学习笔记 (计划中)
 + [Vue全家桶学习笔记 (进行中)](./Vue)
++ [Chrome插件学习笔记 (进行中)](./ChromePlugin)
 + Electron学习笔记 (计划中)
 + VSCode学习笔记 (计划中)
 + [前端面试学习笔记](./前端面试错题集)
