@@ -236,6 +236,40 @@ npx vue-cli-service help [command]
 - `cache-loader` 会默认为 Vue/Babel/TypeScript 编译开启。文件会缓存在 `node_modules/.cache` 中——如果你遇到了编译方面的问题，记得先删掉缓存目录之后再试试看。
 - `thread-loader` 会在多核 CPU 的机器上为 Babel/TypeScript 转译开启
 
+---
+
+### 7. 浏览器兼容
+
+通过Babel来实现，包括：browserslist、Polyfill和现代模式
+
+---
+
+### 8. HTML和静态资源
+
+#### HTML
+
+`public/index.html` 文件是一个会被 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 处理的模板。
+
+因为 index 文件被用作模板，所以你可以使用 [lodash template](https://lodash.com/docs/4.17.10#template) 语法插入内容：
+
+- `<%= VALUE %>` 用来做不转义插值；
+- `<%- VALUE %>` 用来做 HTML 转义插值；
+- `<% expression %>` 用来描述 JavaScript 流程控制。
+
+除了[被 `html-webpack-plugin` 暴露的默认值](https://github.com/jantimon/html-webpack-plugin#writing-your-own-templates)之外，所有[客户端环境变量](https://cli.vuejs.org/zh/guide/mode-and-env.html#using-env-variables-in-client-side-code)也可以直接使用。
+
+
+
+**Preload** 和 **Prefetch** ：
+
+一个 Vue CLI 应用会为所有初始化渲染需要的文件自动生成 preload 提示。
+
+一个 Vue CLI 应用会为所有作为 async chunk 生成的 JavaScript 文件 ([通过动态 `import()` 按需 code splitting](https://webpack.js.org/guides/code-splitting/#dynamic-imports) 的产物) 自动生成 prefetch 提示。
+
+#### 静态资源
+
+
+
 
 ---
 

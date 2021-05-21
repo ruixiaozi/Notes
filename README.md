@@ -16,6 +16,7 @@
 + [SASS/SCSS学习笔记 (进行中)](./SASS)
 + [Node.js学习笔记 (进行中)](./NodeJS)
 + webpack学习笔记 (计划中)
++ Babel学习笔记(计划中)
 + MockJS学习笔记 (计划中)
 + [Vue全家桶学习笔记 (进行中)](./Vue)
 + [Chrome插件学习笔记 (进行中)](./ChromePlugin)
