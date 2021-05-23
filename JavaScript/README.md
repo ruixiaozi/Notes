@@ -4,6 +4,7 @@
 + [概述](./conception.md) 
 + [web前端研发工程师编程能力成长之路](./future.md)
 + [JS注释规范](./annotation.md)
++ [JS模块化](./modules.md)
 + [基本概念](./no1.md)
 + [变量与数据类型](./no2.md)
 + [操作符与语句](./no3.md)
@@ -15,5 +16,5 @@
 + 对象的深入理解
 + 创建自定义对象的七大模式
 + 继承
-+ map/reduce/split/filter
++ map/reduce/split/filter/find/splice
 

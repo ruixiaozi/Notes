@@ -160,7 +160,7 @@ vue add cli-plugin-eslint
 
 ---
 
-### 6. CLI服务
+### 6. CLI服务[重要]
 
 ####  vue-cli-service serve
 
@@ -267,6 +267,166 @@ npx vue-cli-service help [command]
 一个 Vue CLI 应用会为所有作为 async chunk 生成的 JavaScript 文件 ([通过动态 `import()` 按需 code splitting](https://webpack.js.org/guides/code-splitting/#dynamic-imports) 的产物) 自动生成 prefetch 提示。
 
 #### 静态资源
+
+静态资源可以通过两种方式进行处理：
+
+- 在 JavaScript 被导入或在 template/CSS 中通过相对路径被引用。这类引用会被 webpack 处理。
+- 放置在 `public` 目录下或通过绝对路径被引用。这类资源将会直接被拷贝，而不会经过 webpack 的处理。
+
+#### URL 转换规则
+
+- 如果 URL 是一个绝对路径 (例如 `/images/foo.png`)，它将会被保留不变。
+
+- 如果 URL 以 `.` 开头，它会作为一个相对模块请求被解释且基于你的文件系统中的目录结构进行解析。
+
+- 如果 URL 以 `~` 开头，其后的任何内容都会作为一个模块请求被解析。这意味着你甚至可以引用 Node 模块中的资源：
+
+  ```html
+  <img src="~some-npm-package/foo.png">
+  ```
+
+- 如果 URL 以 `@` 开头，它也会作为一个模块请求被解析。它的用处在于 Vue CLI 默认会设置一个指向 `<projectRoot>/src` 的别名 `@`。**(仅作用于模版中)**
+
+---
+
+### 9. CSS相关
+
+具体参考 Vue Loader
+
+---
+
+### 10. webpack相关
+
+参考配置选项
+
+---
+
+### 11. 模式和环境变量[重要]
+
+####  模式
+
+**模式**是 Vue CLI 项目中一个重要的概念。默认情况下，一个 Vue CLI 项目有三个模式：
+
+- `development` 模式用于 `vue-cli-service serve`
+- `test` 模式用于 `vue-cli-service test:unit`
+- `production` 模式用于 `vue-cli-service build` 和 `vue-cli-service test:e2e`
+
+你可以通过传递 `--mode` 选项参数为命令行覆写默认的模式。例如，如果你想要在构建命令中使用开发环境变量：
+
+```
+vue-cli-service build --mode development
+```
+
+当运行 `vue-cli-service` 命令时，所有的环境变量都从对应的[环境文件](https://cli.vuejs.org/zh/guide/mode-and-env.html#环境变量)中载入。如果文件内部不包含 `NODE_ENV` 变量，它的值将取决于模式，例如，在 `production` 模式下被设置为 `"production"`，在 `test` 模式下被设置为 `"test"`，默认则是 `"development"`。
+
+`NODE_ENV` 将决定您的应用运行的模式，是开发，生产还是测试，因此也决定了创建哪种 webpack 配置。
+
+例如通过将 `NODE_ENV` 设置为 `"test"`，Vue CLI 会创建一个优化过后的，并且旨在用于单元测试的 webpack 配置，它并不会处理图片以及一些对单元测试非必需的其他资源。
+
+同理，`NODE_ENV=development` 创建一个 webpack 配置，该配置启用热更新，不会对资源进行 hash 也不会打出 vendor bundles，目的是为了在开发的时候能够快速重新构建。
+
+当你运行 `vue-cli-service build` 命令时，无论你要部署到哪个环境，应该始终把 `NODE_ENV` 设置为 `"production"` 来获取可用于部署的应用程序。
+
+#### 环境变量
+
+你可以在你的项目根目录中放置下列文件来指定环境变量：
+
+```
+.env                # 在所有的环境中被载入
+.env.local          # 在所有的环境中被载入，但会被 git 忽略
+.env.[mode]         # 只在指定的模式中被载入
+.env.[mode].local   # 只在指定的模式中被载入，但会被 git 忽略
+```
+
+一个环境文件只包含环境变量的“键=值”对：
+
+```
+FOO=bar
+VUE_APP_NOT_SECRET_CODE=some_value
+```
+
+请注意，只有 `NODE_ENV`，`BASE_URL` 和以 `VUE_APP_` 开头的变量将通过 `webpack.DefinePlugin` 静态地嵌入到*客户端侧*的代码中。这是为了避免意外公开机器上可能具有相同名称的私钥。
+
+被载入的变量将会对 `vue-cli-service` 的所有命令、插件和依赖可用。
+
+#### 环境文件加载优先级
+
+为一个特定模式准备的环境文件 (例如 `.env.production`) 将会比一般的环境文件 (例如 `.env`) 拥有更高的优先级。
+
+此外，Vue CLI 启动时已经存在的环境变量拥有最高优先级，并不会被 `.env` 文件覆写。
+
+`.env` 环境文件是通过运行 `vue-cli-service` 命令载入的，因此环境文件发生变化，你需要重启服务。
+
+#### 在客户端侧代码中使用环境变量
+
+只有以 `VUE_APP_` 开头的变量会被 `webpack.DefinePlugin` 静态嵌入到客户端侧的包中。你可以在应用的代码中这样访问它们：
+
+```
+console.log(process.env.VUE_APP_SECRET)
+
+```
+
+在构建过程中，`process.env.VUE_APP_SECRET` 将会被相应的值所取代。在 `VUE_APP_SECRET=secret` 的情况下，它会被替换为 `"secret"`。
+
+除了 `VUE_APP_*` 变量之外，在你的应用代码中始终可用的还有两个特殊的变量：
+
+- `NODE_ENV` - 会是 `"development"`、`"production"` 或 `"test"` 中的一个。具体的值取决于应用运行的[模式](https://cli.vuejs.org/zh/guide/mode-and-env.html#模式)。
+- `BASE_URL` - 会和 `vue.config.js` 中的 `publicPath` 选项相符，即你的应用会部署到的基础路径。
+
+所有解析出来的环境变量都可以在 `public/index.html` 中以 [HTML 插值](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#插值)中介绍的方式使用。
+
+#### 特殊的
+
+你可以在 `vue.config.js` 文件中计算环境变量。它们仍然需要以 `VUE_APP_` 前缀开头。这可以用于版本信息:
+
+```
+process.env.VUE_APP_VERSION = require('./package.json').version
+
+module.exports = {
+  // config
+}
+```
+
+---
+
+### 12. 构建目标[重要]
+
+当你运行 `vue-cli-service build` 时，你可以通过 `--target` 选项指定不同的构建目标。它允许你将相同的源代码根据不同的用例生成不同的构建。值：
+
+```
+app | lib | wc | wc-async (默认值：app)
+```
+
+#### 应用（app）
+
+应用模式是默认的模式。在这个模式中：
+
+- `index.html` 会带有注入的资源和 resource hint
+- 第三方库会被分到一个独立包以便更好的缓存
+- 小于 4kb 的静态资源会被内联在 JavaScript 中
+- `public` 中的静态资源会被复制到输出目录中
+
+#### 库（lib）
+
+在库模式中，Vue 是*外置的*。这意味着包中不会有 Vue，即便你在代码中导入了 Vue。如果这个库会通过一个打包器使用，它将尝试通过打包器以依赖的方式加载 Vue；否则就会回退到一个全局的 `Vue` 变量。
+
+要避免此行为，可以在`build`命令中添加`--inline-vue`标志。
+
+可以通过下面的命令将一个单独的入口构建为一个库：
+
+```
+vue-cli-service build --target lib --name myLib [entry]
+//其中entry为一个入口文件（js或者vue），如果没有指定入口，则会使用 src/App.vue。
+//如果是Vue则默认导出组件本身
+//
+```
+
+构建一个库会输出：
+
+- `dist/myLib.common.js`：一个给打包器用的 CommonJS 包 (不幸的是，webpack 目前还并没有支持 ES modules 输出格式的包)
+- `dist/myLib.umd.js`：一个直接给浏览器或 AMD loader 使用的 UMD 包（兼容commonjs、amd、cmd）
+- `dist/myLib.umd.min.js`：压缩后的 UMD 构建版本
+- `dist/myLib.css`：提取出来的 CSS 文件 (可以通过在 `vue.config.js` 中设置 `css: { extract: false }` 强制内联)
 
 
 
