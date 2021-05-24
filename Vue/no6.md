@@ -106,19 +106,23 @@ vue create 项目页名称
     ```
     vue ui
     ```
+    
 2. 添加项目配置  
-    在项目目录中创建`vue.config.js`，导出对象中包含`configureWebpack`属性：
+     `vue.config.js` 是一个可选的配置文件，如果项目的 (和 `package.json` 同级的) 根目录中存在这个文件，那么它会被 `@vue/cli-service` 自动加载。你也可以使用 `package.json` 中的 `vue` 字段，但是注意这种写法需要你严格遵照 JSON 的格式来写。
 
+    这个文件应该导出一个包含了选项的对象：  
+    
     ```
     // vue.config.js
+    /**
+     * @type {import('@vue/cli-service').ProjectOptions}
+     */
     module.exports = {
-        configureWebpack: {
-            plugins: [
-            new MyAwesomeWebpackPlugin()
-            ]
-        }
+      // 选项...
     }
     ```
+    
+    具体参考：
 
 ---
 
@@ -287,6 +291,10 @@ npx vue-cli-service help [command]
 
 - 如果 URL 以 `@` 开头，它也会作为一个模块请求被解析。它的用处在于 Vue CLI 默认会设置一个指向 `<projectRoot>/src` 的别名 `@`。**(仅作用于模版中)**
 
+#### 构建一个多页应用
+
+不是每个应用都需要是一个单页应用。Vue CLI 支持使用 `vue.config.js` 中的 `pages` 选项构建一个多页面的应用。构建好的应用将会在不同的入口之间高效共享通用的 chunk 以获得最佳的加载性能。
+
 ---
 
 ### 9. CSS相关
@@ -406,6 +414,8 @@ app | lib | wc | wc-async (默认值：app)
 - 小于 4kb 的静态资源会被内联在 JavaScript 中
 - `public` 中的静态资源会被复制到输出目录中
 
+---
+
 #### 库（lib）
 
 在库模式中，Vue 是*外置的*。这意味着包中不会有 Vue，即便你在代码中导入了 Vue。如果这个库会通过一个打包器使用，它将尝试通过打包器以依赖的方式加载 Vue；否则就会回退到一个全局的 `Vue` 变量。
@@ -427,6 +437,8 @@ vue-cli-service build --target lib --name myLib [entry]
 - `dist/myLib.umd.js`：一个直接给浏览器或 AMD loader 使用的 UMD 包（兼容commonjs、amd、cmd）
 - `dist/myLib.umd.min.js`：压缩后的 UMD 构建版本
 - `dist/myLib.css`：提取出来的 CSS 文件 (可以通过在 `vue.config.js` 中设置 `css: { extract: false }` 强制内联)
+
+---
 
 #### Web Components 组件（wc）
 
@@ -464,12 +476,33 @@ vue-cli-service build --target wc --name foo 'src/components/*.vue'
 
 当你构建多个 web component 时，`--name` 将会用于设置前缀，同时自定义元素的名称会由组件的文件名推导得出。比如一个名为 `HelloWorld.vue` 的组件携带 `--name foo` 将会生成的自定义元素名为 `<foo-hello-world>`。
 
+---
+
 #### 异步 Web Components 组件(wc-async)
 
 当指定多个 Web Components 组件作为目标时，这个包可能会变得非常大，并且用户可能只想使用你的包中注册的一部分组件。这时异步 Web Components 模式会生成一个 code-split 的包，带一个只提供所有组件共享的运行时，并预先注册所有的自定义组件小入口文件。一个组件真正的实现只会在页面中用到自定义元素相应的一个实例时按需获取：
 
 ```
 vue-cli-service build --target wc-async --name foo 'src/components/*.vue'
+
+File                Size                        Gzipped
+
+dist/foo.0.min.js    12.80 kb                    8.09 kb
+dist/foo.min.js      7.45 kb                     3.17 kb
+dist/foo.1.min.js    2.91 kb                     1.02 kb
+dist/foo.js          22.51 kb                    6.67 kb
+dist/foo.0.js        17.27 kb                    8.83 kb
+dist/foo.1.js        5.24 kb                     1.64 kb
+```
+
+现在用户在该页面上只需要引入 Vue 和这个入口文件即可：
+
+```
+<script src="https://unpkg.com/vue"></script>
+<script src="path/to/foo.min.js"></script>
+
+<!-- foo-one 的实现的 chunk 会在用到的时候自动获取 -->
+<foo-one></foo-one>
 ```
 
 
