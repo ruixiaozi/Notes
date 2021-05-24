@@ -428,6 +428,56 @@ vue-cli-service build --target lib --name myLib [entry]
 - `dist/myLib.umd.min.js`：压缩后的 UMD 构建版本
 - `dist/myLib.css`：提取出来的 CSS 文件 (可以通过在 `vue.config.js` 中设置 `css: { extract: false }` 强制内联)
 
+#### Web Components 组件（wc）
+
+在 Web Components 模式中，Vue 是*外置的*。这意味着包中不会有 Vue，即便你在代码中导入了 Vue。这里的包会假设在页面中已经有一个可用的全局变量 `Vue`。
+
+可以通过下面的命令将一个单独的入口构建为一个 Web Components 组件：
+
+```
+vue-cli-service build --target wc --name my-element [entry]
+```
+
+注意这里的入口应该是一个 `*.vue` 文件。Vue CLI 将会把这个组件自动包裹并注册为 Web Components 组件，无需在 `main.js` 里自行注册。也可以在开发时把 `main.js` 作为 demo app 单独使用。
+
+该构建将会产生一个单独的 JavaScript 文件 (及其压缩后的版本) 将所有的东西都内联起来。当这个脚本被引入网页时，会注册自定义组件 `<my-element>`，其使用 `@vue/web-component-wrapper` 包裹了目标的 Vue 组件。这个包裹器会自动代理属性、特性、事件和插槽。
+
+**注意这个包依赖了在页面上全局可用的 `Vue`。**
+
+这个模式允许你的组件的使用者以一个普通 DOM 元素的方式使用这个 Vue 组件：
+
+```
+<script src="https://unpkg.com/vue"></script>
+<script src="path/to/my-element.js"></script>
+
+<!-- 可在普通 HTML 中或者其它任何框架中使用 -->
+<my-element></my-element>
+```
+
+**注册多个 Web Components 组件的包**
+
+当你构建一个 Web Components 组件包的时候，你也可以使用一个 glob 表达式作为入口指定多个组件目标：
+
+```
+vue-cli-service build --target wc --name foo 'src/components/*.vue'
+```
+
+当你构建多个 web component 时，`--name` 将会用于设置前缀，同时自定义元素的名称会由组件的文件名推导得出。比如一个名为 `HelloWorld.vue` 的组件携带 `--name foo` 将会生成的自定义元素名为 `<foo-hello-world>`。
+
+#### 异步 Web Components 组件(wc-async)
+
+当指定多个 Web Components 组件作为目标时，这个包可能会变得非常大，并且用户可能只想使用你的包中注册的一部分组件。这时异步 Web Components 模式会生成一个 code-split 的包，带一个只提供所有组件共享的运行时，并预先注册所有的自定义组件小入口文件。一个组件真正的实现只会在页面中用到自定义元素相应的一个实例时按需获取：
+
+```
+vue-cli-service build --target wc-async --name foo 'src/components/*.vue'
+```
+
+
+
+
+
+
+
 
 
 
