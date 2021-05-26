@@ -6,45 +6,82 @@
 
 ```json
 {
-  // 必须的字段
-  "name": "My Extension",
-  "version": "versionString",
+  // 必选
   "manifest_version": 2,
-  // 建议提供的字段
-  "description": "A plain text description",
-  "icons": { ... },
+  "name": "我的扩展程序",
+  "version": "版本字符串",
+
+  // 推荐
   "default_locale": "en",
-  // 多选一，或者都不提供
+  "description": "纯文本描述",
+  "icons": {...},
+
+  // 选择某一个（或者无）
   "browser_action": {...},
   "page_action": {...},
-  "theme": {...},
-  "app": {...},
-  // 根据需要提供
-  "background": {...},
+
+  // 可选
+  "author": ...,
+  "automation": ...,
+  "background": {
+    // 推荐
+    "persistent": false
+  },
+  "background_page": ...,
+  "chrome_settings_overrides": {...},
+  "chrome_ui_overrides": {
+    "bookmarks_ui": {
+      "remove_bookmark_shortcut": true,
+      "remove_button": true
+    }
+  },
   "chrome_url_overrides": {...},
-  "content_scripts": [...],
-  "content_security_policy": "policyString",
+  "commands": ...,
+  "content_pack": ...,
+  "content_scripts": [{...}],
+  "content_security_policy": "策略字符串",
+  "converted_from_user_script": ...,
+  "current_locale": ...,
+  "devtools_page": ...,
+  "externally_connectable": {
+    "matches": ["*://*.example.com/*"]
+  },
   "file_browser_handlers": [...],
   "homepage_url": "http://path/to/homepage",
-  "incognito": "spanning" or "split",
-  "intents": {...}
-  "key": "publicKey",
-  "minimum_chrome_version": "versionString",
+  "import": ...,
+  "incognito": "spanning 或 split",
+  "input_components": ...,
+  "key": "公钥",
+  "minimum_chrome_version": "版本字符串",
   "nacl_modules": [...],
+  "oauth2": ...,
   "offline_enabled": true,
-  "omnibox": { "keyword": "aString" },
+  "omnibox": {
+    "keyword": "aString"
+  },
+  "optional_permissions": ...,
   "options_page": "aFile.html",
+  "page_actions": ...,
   "permissions": [...],
+  "platforms": ...,
   "plugins": [...],
   "requirements": {...},
+  "sandbox": [...],
+  "script_badge": ...,
+  "short_name": "短名称",
+  "signature": ...,
+  "spellcheck": ...,
+  "storage": {
+    "managed_schema": "schema.json"
+  },
+  "system_indicator": ...,
+  "tts_engine": ...,
   "update_url": "http://path/to/updateInfo.xml",
   "web_accessible_resources": [...]
-}  
+}
 ```
 
-### app
 
-可安装的webapp，包括打包过的app，需要这个字段来指定app需要使用的url。最重要的是app的启动页面------当用户在点击app的图标后，浏览器将导航到的地方。
 
 ### default_locale
 
@@ -254,7 +291,7 @@ manifest版本1从Chrome 18才开始逐步被弃用，版本2目前并不是必�
 
 在Chrome17（极速5.2）或之前的指定版本2将会发生不可预料的事情。
 
-### web_accessible_resources
+### web_accessible_resources 【重要】
 
 一组字符串，指定本扩展在注入的目标页面上所需使用的资源的路径（相对于扩展的安装根目录）。例如，扩展在example.com上注入脚本以构建制界面，将其间所需的资源（图片、图标、样式、脚本等）加入白名单，如下所示：
 

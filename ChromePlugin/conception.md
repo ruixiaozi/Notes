@@ -8,6 +8,8 @@
 ### 2. 参考网站、文章或书籍
 
 + [Chrome扩展开发中文教程](http://chrome.cenchy.com/getstarted.html)
++ [Chrome扩展翻译文档](http://www.kkh86.com/it/chrome-extension-doc/extensions/getstarted.html)
++ [官方文档（中文）](https://crxdoc-zh.appspot.com/extensions/overview)
 
 ---
 
