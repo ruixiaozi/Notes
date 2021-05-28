@@ -15,6 +15,7 @@
 + JQuery学习笔记 (计划中)
 + [SASS/SCSS学习笔记 (进行中)](./SASS)
 + [Node.js学习笔记 (进行中)](./NodeJS)
++ [认证与授权学习笔记 (进行中)](./Verify)
 + webpack学习笔记 (计划中)
 + Babel学习笔记(计划中)
 + MockJS学习笔记 (计划中)
