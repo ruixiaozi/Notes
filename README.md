@@ -41,6 +41,7 @@
 + [Java学习笔记 (暂停)](./Java)
 + [JVM学习笔记 (暂停)](./JVM)
 + [Spring学习笔记 (暂停)](./Spring)
++ [Spring Security学习笔记 (进行中)](./SpringSecurity)
 + [Java数据结构与算法 (暂停)](./JavaStruct)
 + Mybatis学习笔记 (计划中)
 + Spring boot学习笔记 (计划中)
