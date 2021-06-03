@@ -17,4 +17,5 @@
 + 创建自定义对象的七大模式
 + 继承
 + map/reduce/split/filter/find/splice
++ h5 history
 
