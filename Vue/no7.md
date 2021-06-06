@@ -92,14 +92,62 @@
     ```
     new VueRouter({
         //指定是否使用h5 history模式
+        //要在服务端增加一个覆盖所有情况的候选资源：
+        //如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面
+        //这个页面就是你 app 依赖的页面。
+        //参考 后端history配置
         mode: 'history',
         //活动class具体的名称也可以通过这个属性进行修改 
         linkActiveClass: 'active'
         routers:[
             {
                 path: '/',
-                //重定向
+                //重定向  重定向不会触发路由守卫
                 redirect:'/home'
+                //或者是对象
+                //redirect:{name: 'Home'}
+                //或者是方法（route对象是参数）
+                //redirect: to => {
+                // 方法接收 目标路由 作为参数
+                // return 重定向的 字符串路径/路径对象
+                //}
+            },
+            //普通路由
+            {
+                path: '/home',
+                name: 'Home',
+                component: Home,
+            },
+            //别名路由 【重要】
+            {
+                path: '/home',
+                name: 'Home',
+                alias: '/home2'  //访问home2也会访问到home，地址不变，相当于转发
+                //主要用于在内层嵌套路由中，需要一个外层地址访问
+                component: Home,
+            },
+            
+            //多视图路由 【重要】
+            {
+                path: '/home',
+                name: 'Home',
+                component: {
+                	default: Home, //对应 <router-view></router-view>
+                	a: Bar,  //对应 <router-view name="a"></router-view>
+                	b: Baz	//对应 <router-view name="b"></router-view>
+                },
+            },
+            //路由参数 【重要】
+            {
+                path: '/home',
+                name: 'Home',
+                //true的时候，route.params下的属性，将作为props传入组件
+                props: true
+                //props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用
+                //props:{ newsletterPopup: false }
+                //创建一个函数返回 props。这样你便可以将参数转换成另一种类型
+                //props: route => ({ query: route.query.q })
+                component: Home,
             },
             //嵌套路由
             {
@@ -119,6 +167,7 @@
                     }
                 ]
             },
+            //动态路由 【重要】
             {
                 // 动态路径参数 以冒号开头
                 // 参数值会被设置到 this.$route.params，可以在每个组件内使用
@@ -127,6 +176,7 @@
                 name: 'Home',
                 component: Home
             },
+            //懒加载 【重要】
             {
                 path: '/about',
                 name: 'About',
@@ -169,6 +219,8 @@
 
 最初创建的那个router对象，在Vue中通过`$router`进行引用。
 
+**Vue Router 的导航方法 (`push`、 `replace`、 `go`) 在各类路由模式 (`history`、 `hash` 和 `abstract`) 下表现一致。**
+
 1. push方法
 
     ```
@@ -200,7 +252,33 @@
     
     如果目的地和当前路由相同，只有参数发生了改变 (比如从一个用户资料到另一个 `/users/1` -> `/users/2`)，你需要使用 `beforeRouteUpdate` 来响应这个变化 (比如抓取用户信息)
 
-2. 123
+2. replace方法
+
+    ```
+    //router.replace(location, onComplete?, onAbort?)
+    //<router-link :to="..." replace> 与 该方法相同
+    // 使用方法与push相似，唯一的不同就是，它不会向 history 添加新记录，而是跟它的方法名一样 —— 替换掉当前的 history 记录。
+    ```
+
+3. go方法
+
+    ```
+    //这个方法的参数是一个整数，意思是在 history 记录中向前或者后退多少步，类似 window.history.go(n)
+    // 在浏览器记录中前进一步，等同于 history.forward()
+    router.go(1)
+    
+    // 后退一步记录，等同于 history.back()
+    router.go(-1)
+    
+    // 前进 3 步记录
+    router.go(3)
+    
+    // 如果 history 记录不够用，那就默默地失败呗
+    router.go(-100)
+    router.go(100)
+    ```
+
+    
 
 ---
 ### 5. route对象
@@ -252,7 +330,60 @@ router对象中routers的每个规则，就是一个route，当前的路由用`$
     </keep-alive>
     ```
 
+---
 
+### 8. 后端history模式配置
+
+#### Apache
+
+```text
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+
+除了 `mod_rewrite`，你也可以使用 [`FallbackResource`](https://httpd.apache.org/docs/2.2/mod/mod_dir.html#fallbackresource)。
+
+#### nginx
+
+```nginx
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
+
+#### 原生 Node.js
+
+```js
+const http = require('http')
+const fs = require('fs')
+const httpPort = 80
+
+http.createServer((req, res) => {
+  fs.readFile('index.html', 'utf-8', (err, content) => {
+    if (err) {
+      console.log('We cannot open "index.html" file.')
+    }
+
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
+    })
+
+    res.end(content)
+  })
+}).listen(httpPort, () => {
+  console.log('Server listening on: http://localhost:%s', httpPort)
+})
+```
+
+#### 基于 Node.js 的 Express
+
+对于 Node.js/Express，请考虑使用 [connect-history-api-fallback 中间件](https://github.com/bripkens/connect-history-api-fallback)
 
 
 
