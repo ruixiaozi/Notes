@@ -83,7 +83,7 @@
     
 
 ---
-### 3. 配置路由
+### 3. 配置路由与标签
 
 1. 配置信息
 
@@ -96,9 +96,14 @@
         //如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面
         //这个页面就是你 app 依赖的页面。
         //参考 后端history配置
-        mode: 'history',
+        mode: 'history',	//"hash" | "history" | "abstract"
+        base: "/",	//应用的基路径
+        scrollBehavior (to, from, savedPosition) {
+            // return 期望滚动到哪个的位置
+        },
         //活动class具体的名称也可以通过这个属性进行修改 
-        linkActiveClass: 'active'
+        linkActiveClass: 'active',
+        linkExactActiveClass: 'active',
         routers:[
             {
                 path: '/',
@@ -117,6 +122,8 @@
                 path: '/home',
                 name: 'Home',
                 component: Home,
+                // 元信息，用于存储一个特征
+             	meta: { requiresAuth: true }
             },
             //别名路由 【重要】
             {
@@ -181,7 +188,11 @@
                 path: '/about',
                 name: 'About',
                 //懒加载
-                component: () => import('../views/About.vue')
+                component: () => import('../views/About.vue'),
+                //把某个路由下的所有组件都打包在同个异步块 (chunk) 中
+                //只需要使用 命名 chunk (opens new window)，
+                //一个特殊的注释语法来提供 chunk name (需要 Webpack > 2.4)。
+                component: () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
             },
             {
                 // 通配符路由，请把通配符路由放在最后一个
@@ -200,19 +211,61 @@
     
       有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：**谁先定义的，谁的优先级就最高**。
     
-2. 标签属性
 
-    + `<router-link>`
-        1. tag: tag可以指定`<router-link>`之后渲染成什么组件, 比如上面的代码会被渲染成一个`<li>`元素, 而不是`<a>`
-        2. replace: replace不会留下history记录, 所以指定replace的情况下, 后退键返回不能返回到上一个页面中
-        3. active-class: 当`<router-link>`对应的路由匹配成功时, 会自动给当前元素设置一个router-link-active的class, 设置active-class可以修改默认的名称.
-        4. to: 可以绑定一个对象
-            ```
-            :to="{
-                path:'/home',
-                query:{name:'abc',age:18}
-            }"
-            ```
+---
+
+###  4. 标签属性
+
++ `<router-link>`
+
+    1. **tag:** tag可以指定`<router-link>`之后渲染成什么组件, 比如上面的代码会被渲染成一个`<li>`元素, 而不是`<a>`
+
+    2. **replace:** boolean类型，replace不会留下history记录, 所以指定replace的情况下, 后退键返回不能返回到上一个页面中
+
+    3. **append**：boolean类型，设置 append 属性后，则在当前 (相对) 路径前添加基路径。例如，我们从 /a 导航到一个相对路径 b，如果没有配置 append，则路径为 /b，如果配了，则为 /a/b
+
+    4. **active-class:** 当`<router-link>`对应的路由匹配成功时, 会自动给当前元素设置一个router-link-active的class, 设置active-class可以修改默认的名称.
+
+    5. **exact**：boolean类型，是否开启严格的激活模式。严格的激活模式，只有在to和当前路由完全匹配才激活。否则只要当前路由包含to就激活。
+
+    6. **exact-active-class**：字符串类型，严格匹配的class样式。
+
+    7. **event**：字符串类型，表示什么事件触发导航。默认是"click"
+
+    8. **to:** 可以绑定一个对象或者path字符串
+
+        ```
+        :to="{
+            path:'/home',
+            query:{name:'abc',age:18}
+        }"
+        ```
+
+    9. **v-slot**：使用 v-slot API 时，需要向 router-link 传入一个单独的子元素。否则 router-link 将会把子元素包裹在一个 span 元素内。
+
+       ```html
+       <router-link
+         to="/about"
+         custom
+         v-slot="{ href, route, navigate, isActive, isExactActive }"
+       >
+         <NavLink :active="isActive" :href="href" @click="navigate"
+           >{{ route.fullPath }}</NavLink
+         >
+       </router-link>
+       ```
+
+       - `href`：解析后的 URL。将会作为一个 `a` 元素的 `href` attribute。
+       - `route`：解析后的规范化的地址。
+       - `navigate`：触发导航的函数。**会在必要时自动阻止事件**，和 `router-link` 同理。
+       - `isActive`：如果需要应用[激活的 class](https://router.vuejs.org/zh/api/#active-class) 则为 `true`。允许应用一个任意的 class。
+       - `isExactActive`：如果需要应用[精确激活的 class](https://router.vuejs.org/zh/api/#exact-active-class) 则为 `true`。允许应用一个任意的 class
+
++ `<router-view>`
+
+    1. **name**：多视图路由
+
+    
 
 ---
 ### 4. router对象 
@@ -306,15 +359,122 @@ router对象中routers的每个规则，就是一个route，当前的路由用`$
 ---
 ### 6. 导航守卫
 
-+ vue-router提供的导航守卫主要用来监听监听路由的进入和离开的.
-+ vue-router提供了beforeEach和afterEach的钩子函数, 它们会在路由即将改变前和改变后触发.
-+ 导航首位分为3中（参见官网）：
-    1. 全局守卫.
-    2. 路由独享的守卫.
-    3. 组件内的守卫.
+有多种机会植入路由导航过程中：**全局**的, **单个路由独享**的, 或者**组件级**的。
+
+【重要】**参数或查询的改变并不会触发进入/离开的导航守卫**。你可以通过[观察 `$route` 对象](https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#响应路由参数的变化)来应对这些变化，或使用 `beforeRouteUpdate` 的组件内守卫
+
+1. 全局前置守卫
+
+   使用 `router.beforeEach` 注册一个全局前置守卫：
+
+   ```
+   const router = new VueRouter({ ... })
+   
+   router.beforeEach((to, from, next) => {
+     // ...
+   })
+   ```
+
+   当一个导航触发时，全局前置守卫按照创建顺序调用.
+
+   守卫是异步解析执行，**此时导航在所有守卫 resolve 完之前一直处于** **等待中**。
+
+   每个守卫方法接收三个参数：
+
+   - **`to: Route`**: 即将要进入的目标 [路由对象](https://router.vuejs.org/zh/api/#路由对象)
+   - **`from: Route`**: 当前导航正要离开的路由
+   - **`next: Function`**: 一定要调用该方法来 **resolve** 这个钩子。执行效果依赖 `next` 方法的调用参数。
+     - **`next()`**: 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 **confirmed** (确认的)。
+     - **`next(false)`**: 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 `from` 路由对应的地址。
+     - **`next('/')` 或者 `next({ path: '/' })`**: 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 `next` 传递任意位置对象，且允许设置诸如 `replace: true`、`name: 'home'` 之类的选项以及任何用在 [`router-link` 的 `to` prop](https://router.vuejs.org/zh/api/#to) 或 [`router.push`](https://router.vuejs.org/zh/api/#router-push) 中的选项。
+     - **`next(error)`**: (2.4.0+) 如果传入 `next` 的参数是一个 `Error` 实例，则导航会被终止且该错误会被传递给 [`router.onError()`](https://router.vuejs.org/zh/api/#router-onerror) 注册过的回调。
+
+2. 全局解析守卫
+
+   用 `router.beforeResolve` 注册一个全局守卫。这和 `router.beforeEach` 类似，区别是在导航被确认之前，**同时在所有组件内守卫和异步路由组件被解析之后**，解析守卫就被调用。
+
+3. 全局后置钩子
+
+   注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 `next` 函数也不会改变导航本身：
+
+   ```
+   router.afterEach((to, from) => {
+     // ...
+   })
+   ```
+
+4. 路由独享的守卫
+
+   在路由配置上直接定义 `beforeEnter` 守卫:
+
+   ```
+   const router = new VueRouter({
+     routes: [
+       {
+         path: '/foo',
+         component: Foo,
+         beforeEnter: (to, from, next) => {
+           // ...
+         }
+       }
+     ]
+   })
+   ```
+
+5. 组件内的守卫
+
+   可以在路由组件内直接定义以下路由导航守卫：
+
+   - `beforeRouteEnter`
+   - `beforeRouteUpdate` (2.2 新增)
+   - `beforeRouteLeave`
+
+   ```
+   const Foo = {
+     template: `...`,
+     beforeRouteEnter(to, from, next) {
+       // 在渲染该组件的对应路由被 confirm 前调用
+       // 不！能！获取组件实例 `this`
+       // 因为当守卫执行前，组件实例还没被创建
+       // 通过传一个回调给 next来访问组件实例
+       // 只有beforeRouteEnter可以传回调
+        next(vm => {
+           // 通过 `vm` 访问组件实例
+        })
+     },
+     beforeRouteUpdate(to, from, next) {
+       // 在当前路由改变，但是该组件被复用时调用
+       // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+       // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+       // 可以访问组件实例 `this`
+     },
+     beforeRouteLeave(to, from, next) {
+       // 导航离开该组件的对应路由时调用
+       // 可以访问组件实例 `this`
+       // 可以通过 next(false) 来取消
+     }
+   }
+   ```
 
 ---
-### 7. keep-alive
+### 7. 路由解析流程
+
+1. 导航被触发。
+2. 在失活的组件里调用 `beforeRouteLeave` 守卫。
+3. 调用全局的 `beforeEach` 守卫。
+4. 在重用的组件里调用 `beforeRouteUpdate` 守卫 (2.2+)。
+5. 在路由配置里调用 `beforeEnter`。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 `beforeRouteEnter`。
+8. 调用全局的 `beforeResolve` 守卫 (2.5+)。
+9. 导航被确认。
+10. 调用全局的 `afterEach` 钩子。
+11. 触发 DOM 更新。
+12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数，创建好的组件实例会作为回调函数的参数传入。(此处可以获取数据，但是在next之前会停留在之前的页面)
+
+---
+
+### 8. keep-alive
 
 + keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染。
   它们有两个非常重要的属性:  
@@ -332,7 +492,155 @@ router对象中routers的每个规则，就是一个route，当前的路由用`$
 
 ---
 
-### 8. 后端history模式配置
+###  9. 过度效果
+
+`<router-view>` 是基本的动态组件，所以我们可以用 `<transition>` 组件给它添加一些过渡效果：
+
+```
+<transition>
+  <router-view></router-view>
+</transition>
+```
+
+可以基于当前路由与目标路由的变化关系，动态设置过渡效果:
+
+```html
+<!-- 使用动态的 transition name -->
+<transition :name="transitionName">
+  <router-view></router-view>
+</transition>
+
+// 接着在父组件内
+// watch $route 决定使用哪种过渡
+watch: {
+  '$route' (to, from) {
+    const toDepth = to.path.split('/').length
+    const fromDepth = from.path.split('/').length
+    this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+  }
+}
+```
+
+---
+
+### 10. 滚动行为
+
+ **这个功能只在支持 `history.pushState` 的浏览器中可用**
+
+使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。
+
+当创建一个 Router 实例，你可以提供一个 `scrollBehavior` 方法：
+
+```js
+const router = new VueRouter({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+  }
+})
+```
+
+`scrollBehavior` 方法接收 `to` 和 `from` 路由对象。第三个参数 `savedPosition` 当且仅当 `popstate` 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。
+
+这个方法返回滚动位置的对象信息，长这样：
+
+- `{ x: number, y: number }`
+- `{ selector: string, offset? : { x: number, y: number }}` (offset 只在 2.6.0+ 支持)
+
+如果返回一个 falsy (译者注：falsy 不是 `false`，[参考这里 (opens new window)](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy))的值，或者是一个空对象，那么不会发生滚动。
+
+1. 异步滚动
+
+   可以返回一个 Promise 来得出预期的位置描述：
+
+   ```js
+   scrollBehavior (to, from, savedPosition) {
+     return new Promise((resolve, reject) => {
+       setTimeout(() => {
+         resolve({ x: 0, y: 0 })
+       }, 500)
+     })
+   }
+   ```
+
+2. 平滑滚动
+
+   只需将 `behavior` 选项添加到 `scrollBehavior` 内部返回的对象中，就可以为[支持它的浏览器 (opens new window)](https://developer.mozilla.org/en-US/docs/Web/API/ScrollToOptions/behavior)启用原生平滑滚动：
+
+   ```js
+   scrollBehavior (to, from, savedPosition) {
+     if (to.hash) {
+       return {
+         selector: to.hash,
+         behavior: 'smooth',
+       }
+     }
+   }
+   ```
+
+---
+
+### 11. 导航故障
+
+当使用 `router-link` 组件时，Vue Router 会自动调用 `router.push` 来触发一次导航。 虽然大多数链接的预期行为是将用户导航到一个新页面，但也有少数情况下用户将留在同一页面上：
+
+- 用户已经位于他们正在尝试导航到的页面
+- 一个[导航守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html)通过调用 `next(false)` 中断了这次导航
+- 一个[导航守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html)抛出了一个错误，或者调用了 `next(new Error())`
+
+当使用 `router-link` 组件时，**这些失败都不会打印出错误**。然而，如果你使用 `router.push` 或者 `router.replace` 的话，可能会在控制台看到一条 *"Uncaught (in promise) Error"* 这样的错误，后面跟着一条更具体的消息。让我们来了解一下如何区分*导航故障*。
+
+**在 v3.2.0 中，可以通过使用 `router.push` 的两个可选的回调函数：`onComplete` 和 `onAbort` 来暴露*导航故障*。从版本 3.1.0 开始，`router.push` 和 `router.replace` 在没有提供 `onComplete`/`onAbort` 回调的情况下会返回一个 *Promise*。这个 *Promise* 的 resolve 和 reject 将分别用来代替 `onComplete` 和 `onAbort` 的调用**
+
+1. 检测导航故障
+
+   *导航故障*是一个 `Error` 实例，附带了一些额外的属性。要检查一个错误是否来自于路由器，可以使用 `isNavigationFailure` 函数：
+
+   ```js
+   import VueRouter from 'vue-router'
+   const { isNavigationFailure, NavigationFailureType } = VueRouter
+   
+   // 正在尝试访问 admin 页面
+   router.push('/admin').catch(failure => {
+     if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+       // 向用户显示一个小通知
+       showToast('Login in order to access the admin panel')
+     }
+   })
+   ```
+
+   提示
+
+   如果你忽略第二个参数：`isNavigationFailure(failure)`，那么就只会检查这个错误是不是一个*导航故障*。
+
+2. NavigationFailureType
+
+   `NavigationFailureType` 可以帮助开发者来区分不同类型的*导航故障*。有四种不同的类型：
+
+   - `redirected`：在导航守卫中调用了 `next(newLocation)` 重定向到了其他地方。
+   - `aborted`：在导航守卫中调用了 `next(false)` 中断了本次导航。
+   - `cancelled`：在当前导航还没有完成之前又有了一个新的导航。比如，在等待导航守卫的过程中又调用了 `router.push`。
+   - `duplicated`：导航被阻止，因为我们已经在目标位置了
+
+3. 导航故障的属性
+
+   所有的导航故障都会有 `to` 和 `from` 属性，分别用来表达这次失败的导航的目标位置和当前位置。
+
+   ```js
+   // 正在尝试访问 admin 页面
+   router.push('/admin').catch(failure => {
+     if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+       failure.to.path // '/admin'
+       failure.from.path // '/'
+     }
+   })
+   ```
+
+   在所有情况下，`to` 和 `from` 都是规范化的路由位置
+
+---
+
+### 12. 后端history模式配置
 
 #### Apache
 
