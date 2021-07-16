@@ -33,7 +33,7 @@
 
 这种方式是最常用的流程，安全性也最高，它适用于那些有后端的 Web 应用。授权码通过前端传送，令牌则是储存在后端，而且所有与资源服务器的通信都在后端完成。这样的前后端分离，可以避免令牌泄漏。
 
-1. 第一步，A 网站提供一个链接，用户点击后就会跳转到 B 网站，授权用户数据给 A 网站使用。下面就是 A 网站跳转 B 网站的一个示意链接。
+1. 第一步，A 网站提供一个链接，用户点击后就会跳转到 B 网站，授权用户数据给 A 网站使用。下面就是 A 网站跳转 B 网站的一个示意链接。**（不需要client_secret）**
 
    ```
    https://b.com/oauth/authorize?
@@ -121,7 +121,8 @@
      grant_type=password&
      username=USERNAME&
      password=PASSWORD&
-     client_id=CLIENT_ID
+     client_id=CLIENT_ID&
+     client_secret=CLIENT_SECRET
    ```
 
    上面 URL 中，`grant_type`参数是授权方式，这里的`password`表示"密码式"，`username`和`password`是 B 的用户名和密码。
