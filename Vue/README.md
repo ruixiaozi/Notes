@@ -14,4 +14,5 @@
 + [axios](./no10.md)
 + [SSR](./no11.md)
 + [VueCLI配置](./no12.md)
++ [数据获取方式](./no13.md)
 + 

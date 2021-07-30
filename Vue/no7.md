@@ -104,6 +104,11 @@
         //活动class具体的名称也可以通过这个属性进行修改 
         linkActiveClass: 'active',
         linkExactActiveClass: 'active',
+        //提供自定义查询字符串的解析/反解析函数。覆盖默认行为
+        parseQuery(query){return query},
+        stringifyQuery(query){return query},
+        //当浏览器不支持 history.pushState 控制路由是否应该回退到 hash 模式。默认值为 true
+        fallback:true,
         routers:[
             {
                 path: '/',
@@ -272,6 +277,17 @@
 
 最初创建的那个router对象，在Vue中通过`$router`进行引用。
 
+属性：
+
+```
+1. app 配置了 router 的 Vue 根实例
+2. mode 路由使用的模式
+3. currentRoute 当前路由对应的路由信息对象
+4. START_LOCATION 以路由对象的格式展示初始路由地址，即路由开始的地方。可用在导航守卫中以区分初始导航
+```
+
+
+
 **Vue Router 的导航方法 (`push`、 `replace`、 `go`) 在各类路由模式 (`history`、 `hash` 和 `abstract`) 下表现一致。**
 
 1. push方法
@@ -331,7 +347,87 @@
     router.go(100)
     ```
 
+4. back方法
+
+    ```
+    //回退一步
+    router.back();
+    ```
+
+5. forward方法
+
+    ```
+    //前进一步
+    router.forward();
+    ```
+
+6. getMatchedComponents方法
+
+    ```
+    返回目标位置或是当前路由匹配的组件数组 (是数组的定义/构造类，不是实例)。通常在服务端渲染的数据预加载时使用
+    const matchedComponents: Array<Component> = router.getMatchedComponents(location?)
+    ```
+
+7. resolve方法
+
+    ```
+    const resolved: {
+      location: Location;
+      route: Route;
+      href: string;
+    } = router.resolve(location, current?, append?)
+    /*
+    解析目标位置 (格式和 <router-link> 的 to prop 一样)。
     
+    current 是当前默认的路由 (通常你不需要改变它)
+    append 允许你在 current 路由上附加路径 (如同 router-link)
+    */
+    ```
+
+8. addRoute方法
+
+    ```
+    //添加一条新路由规则。如果该路由规则有 name，并且已经存在一个与之相同的名字，则会覆盖它
+    addRoute(route: RouteConfig): () => void
+    //添加一条新的路由规则记录作为现有路由的子路由。如果该路由规则有 name，并且已经存在一个与之相同的名字，则会覆盖它。
+    addRoute(parentName: string, route: RouteConfig): () => void
+    ```
+
+9. getRoutes方法
+
+    ```
+    //获取所有活跃的路由记录列表
+    getRoutes(): RouteRecord[]
+    ```
+
+10. onReady方法
+
+    ```
+    /*该方法把一个回调排队，在路由完成初始导航时调用，这意味着它可以解析所有的异步进入钩子和路由初始化相关联的异步组件。
+    
+    这可以有效确保服务端渲染时服务端和客户端输出的一致。
+    
+    第二个参数 errorCallback 只在 2.4+ 支持。它会在初始化路由解析运行出错 (比如解析一个异步组件失败) 时被调用。
+    */
+    router.onReady(callback, [errorCallback])
+    ```
+
+11. onError方法
+
+     ```
+     /*
+     注册一个回调，该回调会在路由导航过程中出错时被调用。注意被调用的错误必须是下列情形中的一种：
+     
+     错误在一个路由守卫函数中被同步抛出；
+     
+     错误在一个路由守卫函数中通过调用 next(err) 的方式异步捕获并处理；
+     
+     渲染一个路由的过程中，需要尝试解析一个异步组件时发生错误。
+     */
+     router.onError(callback)
+     ```
+
+     
 
 ---
 ### 5. route对象
@@ -351,10 +447,28 @@ router对象中routers的每个规则，就是一个route，当前的路由用`$
     ```
     this.$route.query.id
     ```
+    
 3. path  
     当前的路径
+    
 4. name  
     当前设置的名字
+    
+5. hash
+
+    当前路由的hash值（带#），如果没有，则为空字符串
+
+6. fullPath
+
+    包含query、hash的完整路径
+
+7. matched（Array）
+
+    一个数组，包含当前路由的所有嵌套路径的路由记录（就是router配置中该路由的信息对象）
+
+8. redirectedFrom
+
+    如果存在路由重定向，即重定向来源的路由名字。
 
 ---
 ### 6. 导航守卫
