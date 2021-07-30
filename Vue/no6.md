@@ -246,6 +246,8 @@ npx vue-cli-service help [command]
 
 通过Babel来实现，包括：browserslist、Polyfill和现代模式
 
+Babel使用文件 `babel.config.js` 来配置。
+
 ---
 
 ### 8. HTML和静态资源
