@@ -16,6 +16,7 @@
 + 对象的深入理解
 + 创建自定义对象的七大模式
 + 继承
++ [异步](./no12.md)
 + map/reduce/split/filter/find/splice
 + h5 history
 
