@@ -1,0 +1,268 @@
+## SASS/SCSS学习笔记 sass:meta 元信息模块
+
+---
+
+## 1. 混合器
+
+### 1.1 meta.load-css() 加载一个混合器
+
+- **包含函数：**
+
+  - `meta.load-css($url, $with: null)`
+
+- **用法：**
+
+  根据`$url`加载模块并包含它的CSS，就好像它是**作为这个mixin的内容编写的一样**(加载的文件，就是minix的定义内容)。`$with`参数提供模块的配置；如果它被传递，它必须是一个从变量名（没有`$`）到这些变量值的映射，以便在加载的模块中使用。
+
+  如果`$url`是相对地址，则它被解释为相对于包含了`meta.load-css()`的文件。
+
+  **与@use规则下相同的地方：**
+
+  - 只对给定的模块求一次值，即使它以不同的方式加载了多次。
+  - 不能为已经加载的模块提供配置，不管它是否已经加载了配置。
+
+  **与@use规则不同的地方：**
+
+  - 并不会使加载模块中的任何成员在当前模块中可用。
+  - 可以在样式表的任何地方使用。它甚至可以嵌套在样式规则中来创建嵌套样式！
+  - 加载的模块URL可以来自一个变量并包含插值表达式。
+
+  ```
+  // dark-theme/_code.scss
+  $border-contrast: false !default;
+  
+  code {
+      background-color: #6b717f;
+      color: #d2e1dd;
+      @if $border-contrast {
+          border-color: #dadbdf;
+      }
+  }
+  
+  // style.scss
+  @use "sass:meta";
+  
+  body.dark {
+  @include meta.load-css("dark-theme/code",
+      $with: ("border-contrast": true));
+  }
+  ```
+
+## 2. 方法
+
+### 2.1 meta.call() 
+
+- **包含函数：**
+
+  - `meta.call($function, $args...)`
+  - `call($function, $args...)`
+
+- **用法：**
+
+  以`$args`为输入参数调用`$function`，并返回结果。 `$function`应该是由meta.get-function()返回的函数。
+
+### 2.2 meta.content-exists()
+
+- **包含函数：**
+
+  - `meta.content-exists()`
+  - `content-exists()`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  判断混合器中是否传递了@content块。如果是在混合器外部调用的将会抛错。
+
+### 2.3 meta.feature-exists()
+
+- **包含函数：**
+
+  - `meta.feature-exists()`
+  - `feature-exists()`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  判断当前的Sass实现是否支持`$feature`。
+
+  `$feature`必须是字符串。目前已经支持的特征有：
+
+  - `global-variable-shadowing`，这意味着局部变量将隐藏全局变量，除非它有`!global`标志。
+  - `extend-selector-pseudoclass`，这意味着@extend规则将影响嵌套在伪类中的选择器，比如`:not()`。
+  - `unit-level3`，这意味着支持在CSS 3取值和单位中定义的单位进行单位计算。
+  - `at-error`，表示支持@error规则。
+  - `custom-property`，这意味着自定义属性声明值不支持除插值表达式之外的任何表达式
+
+### 2.4 meta.function-exists()
+
+- **包含函数：**
+
+  - `meta.function-exists($name)`
+  - `function-exists($name)`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  判断名为`$name`的函数是否已经定义，它可以是内置函数，也可以是用户自定义函数。
+
+### 2.5 meta.get-function()
+
+- **包含函数：**
+
+  - `meta.get-function($name, $css: false)`
+  - `get-function($name, $css: false)`
+
+- **返回值：**function
+
+- **用法：**
+
+  返回名为`$name`的函数，它内置函数和用户自定函数。如果`$css`为真值，则返回原生的CSS函数。如果找不到则抛错。
+
+  返回的函数可以通过meta.call()调用。
+
+### 2.6 meta.global-variable-exists()
+
+- **包含函数：**
+
+  - `meta.global-variable-exists($name)`
+  - `global-variable-exists($name)`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  判断名为`$name`（不包含`$`）的全局变量是否存在。可参考meta.variable-exists()。
+
+### 2.7 meta.inspect()
+
+- **包含函数：**
+
+  - `meta.inspect($value)`
+  - `inspect($value)`
+
+- **返回值：**unquoted string
+
+- **用法：**
+
+  返回`$value`的字符串表示形式。
+
+  返回任何Sass值的表示，而不仅仅是那些可以在CSS中表示的值。因此，它的返回值不能保证是有效的CSS。
+
+### 2.8 meta.keywords()
+
+- **包含函数：**
+
+  - `meta.keywords($args)`
+  - `keywords($args)`
+
+- **返回值：**map
+
+- **用法：**
+
+  返回传递给mixin或接受任意参数的关键字参数，结果为一个映射，key为参数名（不包含`$`），value为传递过来的值。`$args`参数必须是一个参数列表。
+
+### 2.9 meta.mixin-exists()
+
+- **包含函数：**
+
+  - `meta.mixin-exists($name)`
+  - `meta.mixin-exists($name)`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  判断名为`$name`的混合器是否存在
+
+### 2.10 meta.module-functions()
+
+- **包含函数：**
+
+  - `meta.module-functions($module)`
+
+- **返回值：**map
+
+- **用法：**
+
+  返回一个模块的所有函数，结果为一个映射，key为函数名，value为函数体。
+
+  `$module`参数必须是与当前文件中的@use规则的名称空间匹配的字符串。
+
+### 2.11 meta.module-variables() 
+
+- **包含函数：**
+
+  - `meta.module-variables($module)`
+
+- **返回值：**map
+
+- **用法：**
+
+  返回模块中定义的所有变量，结果为一个映射，key为变量名（不带`$`），value为变量值。
+
+  `$module`参数必须是与当前文件中的@use规则的名称空间匹配的字符串。
+
+### 2.12 meta.type-of() 
+
+- **包含函数：**
+
+  - `meta.type-of($value)`
+  - `type-of($value)`
+
+- **返回值：**unquoted string
+
+- **用法：**
+
+  返回`$value`的类型。
+
+### 2.13 meta.variable-exists()
+
+- **包含函数：**
+
+  - `meta.variable-exists($name)`
+  - `variable-exists($name)`
+
+- **返回值：**boolean
+
+- **用法：**
+
+  返回当前作用域中是否存在名为`$name`（不带`$`）的变量。
+
+  可参考meta.global-variable-exists()。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+#### [返回目录](./)
