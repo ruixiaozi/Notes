@@ -1,4 +1,4 @@
-## Vue全家桶学习笔记 组件化
+## Vue全家桶学习笔记 Vue组件
 ---
 ### 1. 基本使用
 
@@ -12,7 +12,7 @@
     + template写法  
         ```
         <template id="xxx">
-
+        
         </template>
         ```
 
@@ -69,7 +69,7 @@
                 props:['aaa','bbb']
             }
         }
-
+        
         <name :aaa="" :bbb=""></name>
         ```
     + 方式二：对象，对象可以设置传递时的类型，也可以设置默认值等。
@@ -111,7 +111,7 @@
         + 其次，通过this.$refs.ID就可以访问到该组件了。
         ```
         <name ref="xx"></name>
-
+        
         new Vue({
             ......
             methods:{
@@ -134,7 +134,7 @@
     <template id="xx">
         <slot>...默认内容...</slot>
     </template>
-
+    
     <name>
         <h1>我是插槽内容</h1>
     </name>
@@ -146,7 +146,7 @@
         <slot name="a">...默认内容...</slot>
         <slot name="b">...默认内容...</slot>
     </template>
-
+    
     <name>
         <h1 slot="a">我是插槽内容</h1>
     </name>
