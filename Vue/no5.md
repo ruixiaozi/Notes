@@ -1,116 +1,74 @@
-## Vue全家桶学习笔记 Webpack
+## Vue全家桶学习笔记 计算属性与方法
 ---
-### 1. 安装
+### 1. 计算属性
 
+对于任何复杂逻辑，都应当使用**计算属性**：
 
 ```
-npm install webpack@版本号 -g
-或者
-npm install webpack@版本号 --save-dev
-```
+<div id="example">
+  <p>Original message: "{{ message }}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+</div>
 
----
-### 2. 项目结构
-
-```
-  webpack-demo
-  |- package.json
-+ |- index.html
-+ |- /src
-+   |- index.js
-```
-
----
-### 3. 命令
-
-1. 打包js（自动处理js依赖关系和模块化关系）
-
-    + 简单打包 
-        ```
-        webpack src/index.js dist/bundle.js
-        ```
-    + 使用配置文件配置打包目标
-        1. 创建`webpack.config.js`文件：
-            ```
-            const path = require('path')
-
-            module.exports = {
-                entry: './src/index.js',
-                output: {
-                    path: path.resolve(__dirname,'dist'),
-                    filename: 'bundle.js'
-                }
-            }
-            ```
-        2. 打包命令 
-            ```
-            webpack
-            ```
-
-2. 运行服务
-
-    ```
-    webpack-dev-server --参数
-    ```
-
-    参数列表：
-    + contentBase：为哪一个文件夹提供本地服务，默认是根文件夹，我们这里要填写./dist
-    + port：端口号
-    + inline：页面实时刷新
-    + historyApiFallback：在SPA页面中，依赖HTML5的history模式
-
-
----
-### 4. 配置 
-
-1. 配置npm脚本  
-
-    在`package.json`中的`scripts`对象下，创建不同的运行脚本，该脚本会优先使用本项目npm安装的组件：
-    ```
-    {
-        ...
-        "srcipts": {
-            "build": "webpack"
-        }
-        ...
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // 计算属性的 getter
+    reversedMessage: function () {
+      // `this` 指向 vm 实例
+      return this.message.split('').reverse().join('')
     }
-    ```
+  }
+})
+```
+
+#### 1.1 计算属性的setter
+
+计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：
+
+```
+// ...
+computed: {
+  fullName: {
+    // getter
+    get: function () {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set: function (newValue) {
+      var names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+// ...
+```
+
+现在再运行 `vm.fullName = 'John Doe'` 时，setter 会被调用，`vm.firstName` 和 `vm.lastName` 也会相应地被更新。
+
+#### 1.2  缓存机制
+
+我们可以将同一函数定义为一个方法而不是一个计算属性。两种方式的最终结果确实是完全相同的。然而，不同的是**计算属性是基于它们的响应式依赖进行缓存的**。只在相关响应式依赖发生改变时它们才会重新求值。
 
 ---
-### 5. loader
 
-用来解析专门的文件。
+### 2. 方法
 
-1. 使用方法
-    + 在webpack或者对应loader官方查找安装方法和配置方法
-    + 通过npm安装对应的loader
-    + 在`webpack.config.js`中的`modules`下配置。
+一系列处理的集合，与普通方法一样。
 
-2. 常用loader 
-
-    + css-loader
-    + style-loader
-    + less-loader
-    + url-loader
-    + file-loader
-    + vue-loader
-
----
-### 6. babel
-
-用于适配浏览器，转换js语法
-
----
-### 7. 插件
-
-1. 使用插件
-    + 使用npm安装插件
-    + 在`webpack.config.js`中的plugins中配置
-
-2. 常用插件
-    + 版权注释插件：BannerPlugin（自带插件）
-    + 打包HTML插件：HtmlWebpackPlugin
-    + js压缩插件：uglifyjs-webpack-plugin
+```
+<p>Reversed message: "{{ reversedMessage() }}"</p>
+// 在组件中
+methods: {
+  reversedMessage: function () {
+    return this.message.split('').reverse().join('')
+  }
+}
+```
 
 ---
 

@@ -1,173 +1,171 @@
-## Vue全家桶学习笔记 Vue组件
+## Vue全家桶学习笔记 模板语法
+### 1.  插值语法
+
+#### 1.1 **mustache**（`{{要显示的值}}`）
+
+```
+<span>Message: {{ msg }}</span>
+```
+
+#### 1.2 **v-once** 
+
+只会执行一次性地插值，当数据改变时，插值处的内容不会更新。
+
+```
+<span v-once>这个将不会改变: {{ msg }}</span>
+```
+
+#### 1.3 **v-html** 
+
+输出真正的 HTML
+
+```
+<p>Using v-html directive: <span v-html="rawHtml"></span></p>
+```
+
+#### 1.4 **v-text** 
+
+更新元素的 `textContent`
+
+```
+<span v-text="msg"></span>
+```
+
+#### 1.5 **v-pre** 
+
+跳过这个元素和它的子元素的编译过程（即：插值不需要编译）
+
+```
+<span v-pre>{{ this will not be compiled }}</span>
+```
+
+#### 1.6 **v-cloak** 
+
+这个指令保持在元素上直到关联实例结束编译（即：如果插值编译未结束，则这个标签有v-cloak属性，可以配合css使用）
+
+```
+[v-cloak] {
+  display: none;
+}
+<div v-cloak>
+  {{ message }}
+</div>
+//不会显示，直到编译结束。
+```
+
 ---
-### 1. 基本使用
 
-1. 模板的写法
-    + script写法  
-        ```
-        <script type="text/x-template" id="xxx">
-        
-        </script>
-        ```
-    + template写法  
-        ```
-        <template id="xxx">
-        
-        </template>
-        ```
+### 2. 属性绑定（v-bind:XXX 或 :XXX）
 
-2. 注册组件  
-    + 全局注册      
-        ```
-        Vue.component('name',{
-            template:'xxx',
-            ......
-        })
-        ```
-    + 局部注册  
-        ```
-        new Vue({
-            ......
-            components:{
-                'name':{
-                   template:'xxx',
-                   ...... 
-                }
-            }
-            ......
-        })
-        ```
+#### 2.1 普通属性
 
-3. 组件的data  
-    + 组件对象也有一个data属性(也可以有methods等属性，下面我们有用到)
-    + 只是这个data属性必须是一个函数
-    + 而且这个函数返回一个对象，对象内部保存着数据
+```
+<div v-bind:id="dynamicId"></div>
+```
+
+#### 2.2 布尔类型属性
+
+对于布尔 attribute (**它们只要存在就意味着值为 `true`**)，`v-bind` 工作起来略有不同，在这个例子中：
+
+```
+<button v-bind:disabled="isButtonDisabled">Button</button>
+```
+
+如果 `isButtonDisabled` 的值是 `null`、`undefined` 或 `false`，则 `disabled` attribute 甚至不会被包含在渲染出来的 `<button>` 元素中。
+
+#### 2.3 class与style
+
+操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是 attribute，所以我们可以用 `v-bind` 处理它们：只需要通过表达式计算出字符串结果即可。不过，字符串拼接麻烦且易错。因此，在将 `v-bind` 用于 `class` 和 `style` 时，Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，还可以是对象或数组。
+
+`v-bind:class`  和 `v-bind:style`指令也可以与普通的 class attribute 共存
+
++ **class**
+
+  **当在一个自定义组件上使用 `class` property 时，这些 class 将被添加到该组件的根元素上面。这个元素上已经存在的 class 不会被覆盖。**
+
+  + 对象
+
+    对象属性的key为相应的class名称，value为boolean类型，表示是否存在该class：
+
     ```
-    components:{
-        'name':{
-            template:'xxx',
-            data(){
-                return {
-                    ......
-                }
-            } 
-        }
+    <div
+      class="static"
+      v-bind:class="{ active: isActive, 'text-danger': hasError }"
+    ></div>
+    
+    data: {
+      isActive: true,
+      hasError: false
     }
     ```
 
----
-### 2. 父子组件通信  
+  + 数组
 
-![props和emit](./image/propsemit.png)
+    可以把一个数组传给 `v-bind:class`，以应用一个 class 列表：
 
-1. 父组件向子组件传递参数（props）
-    + 方式一：字符串数组，数组中的字符串就是传递时的名称。
-        ```
-        components:{
-            'name':{
-                template:'xxx',
-                props:['aaa','bbb']
-            }
-        }
-        
-        <name :aaa="" :bbb=""></name>
-        ```
-    + 方式二：对象，对象可以设置传递时的类型，也可以设置默认值等。
-        ```
-        components:{
-            'name':{
-                template:'xxx',
-                props:{
-                    aaa:类型,
-                    bbb:[类型1,类型2,...],
-                    ccc:{
-                        type:类型,
-                        required:true|false,
-                        defalut:默认值|（对象和数组类型的props默认值必须是一个函数）
-                    },
-                    ddd:{
-                        //自定义验证
-                        validator:function(value){
-                            return true|false;
-                        }
-                    }
-                }
-            }
-        }
-        ```
-2. 子组件向父组件传递事件（$emit）  
-    + 在子组件函数中，调用`this.&emit('事件名',参数...)`，发送一个自定义事件。
-    + 在父组件中，通过v-on来监听子组件事件。
-
----
-### 3. 父子组件访问 
-
-1. 父组件访问子组件（$children,$refs）
-
-    + $children：数组类型，它包含所有子组件对象。
-    + $resfs：
-        + $refs和ref指令通常是一起使用的。
-        + 首先，我们通过ref给某一个子组件绑定一个特定的ID。
-        + 其次，通过this.$refs.ID就可以访问到该组件了。
-        ```
-        <name ref="xx"></name>
-        
-        new Vue({
-            ......
-            methods:{
-                test(){
-                    this.$refs.xx;
-                }
-            }
-            ......
-        })
-        ```
-2. 子组件访问父组件（$parent）  
-    尽管在Vue开发中，我们允许通过$parent来访问父组件，但是在真实开发中尽量不要这样做。
-
----
-### 4. 插槽（slot）  
-预留一个位置给使用组件时，自定义html代码。
-1. 基本用法   
-    + `<slot>`中的内容表示，如果没有在该组件中插入任何其他内容，就默认显示该内容
     ```
-    <template id="xx">
-        <slot>...默认内容...</slot>
-    </template>
+    <div v-bind:class="[activeClass, errorClass]"></div>
     
-    <name>
-        <h1>我是插槽内容</h1>
-    </name>
-    ```
-2. 带名字的插槽  
-    + 给slot元素一个name属性，再使用的时候，在需要替换的html标签上加上`slot`属性，指明替换的slot。
-    ```
-    <template id="xx">
-        <slot name="a">...默认内容...</slot>
-        <slot name="b">...默认内容...</slot>
-    </template>
-    
-    <name>
-        <h1 slot="a">我是插槽内容</h1>
-    </name>
+    data: {
+      activeClass: 'active',
+      errorClass: 'text-danger'
+    }
     ```
 
-3. 作用域插槽   
-    + 传入插槽的html要遍历，访问组件中的数据
-    + 在插槽上绑定一个`自定义属性`，暴露给外部
-        ```
-        <template id="xx">
-            <slot :data="mydata" :data2="mydata2">...默认内容...</slot>
-        </template>
-        ```
-    + 在插入html时，使用`<template slot-scope="对象名称">`来把插槽暴露的属性绑定到`对象名称`对象中。
-        ```
-        <name>
-            <template slot-scope="slotObj">
-                <span v-for="item in slotObj.data1">{{item}}</span>
-            </template>
-        </name>
-        ```
+    在数组语法中也可以使用对象语法:
+
+    ```
+    <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+    ```
+
+    
+
++ **style**
+
+  当 `v-bind:style` 使用需要添加浏览器引擎前缀的 CSS property 时，如 `transform`，Vue.js 会自动侦测并添加相应的前缀。
+
+  + 对象
+
+    对象语法十分直观——看着非常像 CSS，但其实是一个 JavaScript 对象。CSS property 名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用引号括起来) 来命名：
+
+    ```
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+    ```
+
+    ```
+    data: {
+      activeColor: 'red',
+      fontSize: 30
+    }
+    ```
+
+  + 数组
+
+    数组语法可以将多个样式对象应用到同一个元素上（相当于混入样式）：
+
+    ```
+    <div v-bind:style="[baseStyles, overridingStyles]"></div>
+    ```
+
+    
+
+---
+
+### 3. js表达式
+
+在模板语法中，对于所有的数据绑定，Vue.js 都提供了完全的 JavaScript 表达式支持。这些表达式会在所属 Vue 实例的数据作用域下作为 JavaScript 被解析
+
+```
+{{ number + 1 }}
+
+{{ ok ? 'YES' : 'NO' }}
+
+{{ message.split('').reverse().join('') }}
+
+<div v-bind:id="'list-' + id"></div>
+```
+
+
 
 ---
 

@@ -12,8 +12,9 @@
 + [HTML+CSS学习笔记 (进行中)](./HTML)
 + [JavaScript学习笔记 (进行中)](./JavaScript)
 + [Echarts学习笔记 (进行中)](./Echarts)
++ [Axios学习笔记 (进行中)](./Axios)
 + JQuery学习笔记 (计划中)
-+ [SASS/SCSS学习笔记 (进行中)](./SASS)
++ [SASS/SCSS学习笔记 (已完成)](./SASS)
 + [Node.js学习笔记 (进行中)](./NodeJS)
 + ES6学习笔记
 + [认证与授权学习笔记 (进行中)](./Verify)
