@@ -54,6 +54,27 @@ methods: {
 }
 ```
 
+#### 1.4 绑定一个对象
+
+对象的属性名为事件名，属性值为回调函数
+
+```
+<input v-on="inputListeners" />
+
+Vue.component('base-input', {
+  computed: {
+    inputListeners: function () {
+      return {
+                input: function (event) {
+                	vm.$emit('input', event.target.value)
+                }
+             }
+    }
+  },
+```
+
+
+
 ---
 
 ### 2. 修饰符
@@ -161,7 +182,16 @@ methods: {
   <div v-on:click.ctrl="doSomething">Do something</div>
   ```
 
-  
+
+#### 2.3 原生事件修饰符
+
+你可能有很多次想要在一个组件的根元素上直接监听一个原生事件。这时，你可以使用 `v-on` 的 `.native` 修饰符：
+
+```
+<base-input v-on:focus.native="onFocus"></base-input>
+```
+
+
 
 
 

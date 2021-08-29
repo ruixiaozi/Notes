@@ -61,6 +61,8 @@
 
 ```
 <div v-bind:id="dynamicId"></div>
+//绑定一个对象，属性名是参数名，属性值为参数值
+<div v-bind="{id:dynamicId}"></div>
 ```
 
 #### 2.2 布尔类型属性
