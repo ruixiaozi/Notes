@@ -12,7 +12,7 @@
 + [事件处理](./no8.md)
 + [双向绑定与表单](./no9.md)
 + [Vue组件](./no10.md)
-+ [过滤器](./no3.md)
++ [过滤器](./no11.md)
 + [VueCLI](./no6.md)
 + [VueCLI配置](./no12.md)
 + [Vue-router](./no7.md)
