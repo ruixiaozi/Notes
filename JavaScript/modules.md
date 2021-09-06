@@ -45,6 +45,24 @@ module.exports ={
 };
 ```
 
+**为了方便，Node为每个模块提供一个exports变量，指向module.exports**【exports就是一个别名】。这等同在每个模块头部，有一行这样的命令。
+
+```
+var exports = module.exports;
+```
+
+于是我们可以直接在 exports 对象上添加方法，表示对外输出的接口，如同在module.exports上添加一样。
+
+*注意*，因为 **Node 模块是通过 module.exports 导出**的，如果直接将exports变量指向一个值，就切断了exports与module.exports的联系，导致意外发生：
+
+```
+// a.js
+exports = function a() {};
+
+// b.js
+const a = require('./a.js') // a 是一个空对象
+```
+
 ### 3. CMD
 
 CMD 叫做通用模块定义规范（Common Module Definiton），它是类似于 CommonJs模块化规范，但是运行于浏览器之上的，它是随着前端业务和架构的复杂度越来越高运用而生的，来自淘宝玉伯的 SeaJS 就是它的实现。
