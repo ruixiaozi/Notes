@@ -18,10 +18,11 @@
 + [Node.js学习笔记 (进行中)](./NodeJS)
 + ES6学习笔记
 + [认证与授权学习笔记 (进行中)](./Verify)
-+ webpack学习笔记 (计划中)
++ [webpack学习笔记 (进行中)](./Webpack)
 + Babel学习笔记(计划中)
 + MockJS学习笔记 (计划中)
 + [Vue全家桶学习笔记 (进行中)](./Vue)
++ [Vue原理学习笔记 (进行中)](./VuePrinciple)
 + [Chrome插件学习笔记 (进行中)](./ChromePlugin)
 + Electron学习笔记 (计划中)
 + VSCode学习笔记 (计划中)
