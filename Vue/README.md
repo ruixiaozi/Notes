@@ -20,10 +20,10 @@
 + [插件](./no16.md)
 + [响应式原理](./no17.md)
 + [Vue全局配置](./no18.md)
-+ [VueCLI](./no6.md)
-+ [VueCLI配置](./no12.md)
-+ [Vue-router](./no7.md)
-+ [数据获取方式](./no13.md)
-+ [Vuex](./no9.md)
++ [VueCLI](./no19.md)
++ [VueCLI配置](./no20.md)
++ [Vue-router](./no21.md)
++ [数据获取方式](./no22.md)
++ [Vuex](./no23.md)
 + 
 
