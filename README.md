@@ -26,6 +26,7 @@
 + [Chrome插件学习笔记 (进行中)](./ChromePlugin)
 + Electron学习笔记 (计划中)
 + VSCode学习笔记 (计划中)
++ [WebGIS学习笔记 (进行中)](./WebGIS)
 + [前端面试学习笔记](./前端面试错题集)
 
 ### 数据库
