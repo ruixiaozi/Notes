@@ -10,7 +10,46 @@ OpenLayers实现访问空间数据的方法符合行业标准，支持各种公�
 
 ### 2. Openlayers5的体系架构
 
+![](./img/4.png)
 
+Map：整个地图容器
+
+Layer：地图图层
+
+Source：图层的数据源
+
+Style：矢量图层样式
+
+View：地图视图
+
+### 3. 实例
+
+```
+new Map({
+      target:'map',
+      layers:[
+        new TileLayer({
+          //高德影像底图
+          source: new XYZ({
+            url: "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=6",
+          }),
+        }),
+        new TileLayer({
+          //高德路网切片
+          source: new XYZ({
+            crossOrigin: "anonymous",
+            url: "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8",
+          }),
+        })
+      ],
+      view: new View({
+        center:[114.2905,30.5607],
+        projection: "EPSG:4326",
+        minZoom:2,
+        zoom:21
+      })
+    })
+```
 
 
 
