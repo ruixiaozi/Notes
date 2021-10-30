@@ -25,5 +25,6 @@
 + [Vue-router](./no21.md)
 + [数据获取方式](./no22.md)
 + [Vuex](./no23.md)
++ [vue组件间通信六种方式](./no24.md)
 + 
 
