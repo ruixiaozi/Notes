@@ -11,6 +11,7 @@
 
 + [HTML+CSS学习笔记 (进行中)](./HTML)
 + [JavaScript学习笔记 (进行中)](./JavaScript)
++ [TypeScript学习笔记 (进行中)](./TypeScript)
 + [Echarts学习笔记 (进行中)](./Echarts)
 + [Axios学习笔记 (进行中)](./Axios)
 + JQuery学习笔记 (计划中)
