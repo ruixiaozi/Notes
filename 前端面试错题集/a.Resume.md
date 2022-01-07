@@ -3,17 +3,34 @@
 ### 1. 技能
 
 + 熟悉Javascript（ES5\ES6规范），基于ES6语法和Babel + 装饰器转码插件，实现了一套IoC框架，主要实现依赖注入。
+
 + 熟悉Webkit技术实现（chrome v8原理）
+
 + 熟悉Vue全家桶，自己也实现了一套UI库，同时在公司负责UI组件提取，维护公司组件库。
+
 + 熟悉Vue底层原理
+
 + 熟悉Node、express、koa、TypeORM，使用自己的IoC框架，实现了Controller层组件化（同时实现了适配express和koa）、Service层组件化、Dao层组件化（实现了TypeORM适配）
+
 + 
+
 + 掌握Echarts、arcgis、ElementUI、dplayer、dayjs等第三方库的使用，在Vue项目中能够熟练使用
+
 + 涉猎过Java、.Net后台开发，大学期间一直学习Java、ssm、springboot相关开发，第一份工作中项目用到过.Net core进行后台开发。
+
 + 涉猎过TypeScript以及Nest.js框架，使用其搭建过后台项目
+
 + 能够熟练使用Git/svn，在公司使用过svn。同时自己能够搭建私有Git仓库，掌握分支管理、请求合并等，参与了Github开源项目提过issue，PR
+
 + 对数据可视化、页面数据编辑交互有充足的经验
+
 + 熟悉Oauth2授权规范，使用Node搭建了同时支持4种模式的授权服务器
+
+  ---2021-12-28
+
++ 对前端异步有深入了解，熟悉Promise、BlueBird、RxJS等方式，以及v8引擎得异步原理
+
++ 熟悉Angulay
 
 
 

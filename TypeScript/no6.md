@@ -72,9 +72,45 @@ let tom: Person = {
 tom.id = 9527;//错误
 ```
 
+### 5. 接口继承接口
 
+接口与接口之间可以是继承关系：
 
+```ts
+interface Alarm {
+    alert(): void;
+}
 
+interface LightableAlarm extends Alarm {
+    lightOn(): void;
+    lightOff(): void;
+}
+```
+
+这很好理解，`LightableAlarm` 继承了 `Alarm`，除了拥有 `alert` 方法之外，还拥有两个新方法 `lightOn` 和 `lightOff`
+
+### 6. 接口继承类
+
+常见的面向对象语言中，接口是不能继承类的，但是在 TypeScript 中却是可以的：
+
+```ts
+class Point {
+    x: number;
+    y: number;
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+interface Point3d extends Point {
+    z: number;
+}
+
+let point3d: Point3d = {x: 1, y: 2, z: 3};
+```
+
+在接口继承类的时候，也只会继承它的实例属性和实例方法。构造函数是不包含的，静态属性或静态方法也是不包含的（实例的类型当然不应该包括构造函数、静态属性或静态方法）
 
 
 
