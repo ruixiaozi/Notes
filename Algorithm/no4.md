@@ -3,8 +3,21 @@
 
 + 各排序算法的对比
 ![排序算法比较](./img/pxsf.jpg)
-
 + 梳排序：图上没有，详见下文梳排序内容。
+
+
+
++ 排序（选择<冒泡=插入<希尔< 归并(稳定，nlogn) ~= 快速(利用缓存) ~= 堆（nlogn,空间小）
+
++ 稳定：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。
+
++ 不稳定：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。
+
++ 时间复杂度：对排序数据的总的操作次数。反映当n变化时，操作次数呈现什么规律。
+
+* 空间复杂度：是指算法在计算机
+
+
 
 ---
 ### 1. 选择排序  
@@ -17,19 +30,26 @@
 ![选择排序演示](./img/xzpx.gif)
 
 ```
-//选择排序算法,从小到大
-template<class T>
-inline void selectSort(T arr[],int begin,int end){
-	int minInx;
-	for (int i = begin; i <= end; ++i){
-		minInx = i;
-		for (int j = i + 1; j <= end; ++j){
-			if (arr[j] < arr[minInx])
-				minInx = j;
-		}
-		if (minInx != i)
-			swap(arr[minInx], arr[i]);
-	}
+/**
+ * 选择排序 方法
+ * 时间：平均n2 最坏n2 最好n2
+ * 空间：1
+ * 不稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function selectionSort(arr,compare){
+  for(let i=0;i<arr.length;i++){
+    let inx = i;
+    for(let j=i+1;j<arr.length;j++){
+      if(compare(arr[inx],arr[j])>0){
+        inx = j;
+      }
+    }
+    swap(arr,i,inx);
+  }
+  return arr;
 }
 ```
 
@@ -46,15 +66,27 @@ inline void selectSort(T arr[],int begin,int end){
 ![插入排序演示](./img/crpx.gif)
 
 ```
-//插入排序算法，从小到大
-template<class T>
-inline void insertSort(T arr[], int begin, int end){
-	for (int i = begin; i <= end; ++i){
-		for (int j = i; j > begin && arr[j]<arr[j-1]; --j){
-				swap(arr[j], arr[j - 1]);		
-		}
-	}
+/**
+ * 插入排序 方法
+ * 时间：平均n2 最坏n2 最好n
+ * 空间：1
+ * 稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function insertionSort(arr,compare){
+  for(let i=1;i<arr.length;i++){
+    let current = arr[i];
+    let j;
+    for(j=i-1;j>0 && compare(arr[j],current)>0;j--){
+      arr[j+1] = arr[j];
+    }
+    arr[j+1] = current;
+  }
+  return arr;
 }
+
 ```
 
 ---
@@ -68,37 +100,28 @@ inline void insertSort(T arr[], int begin, int end){
 ![冒泡排序演示](./img/mppx.jpg)
 
 ```
-//冒泡排序算法，从小到大
-template<class T>
-inline void bubbleSort(T arr[], int begin, int end){
-	for (int i = end; i > begin; --i){
-		for (int j = begin; j < i; ++j){
-			if (arr[j + 1] < arr[j])
-				swap(arr[j + 1], arr[j]);
-		}
-	}
+/**
+ * 冒泡排序 方法
+ * 时间：平均n2 最坏n2 最好n
+ * 空间：1
+ * 稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function bubbleSort(arr,compare){
+  for(let i=0;i<arr.length;i++){
+    for(let j=0;j<arr.length-i-1;j++){
+      if(compare(arr[j],arr[j+1])>0){
+        swap(arr,j,j+1);
+      }
+    }
+  }
+  return arr;
 }
 ```
 
 &emsp;&emsp;可以优化冒泡排序，当某一次遍历的每一对都没有交换，那么表示已经拍好顺序了，则无需再进行后续比较。
-
-```
-//冒泡排序算法 优化版，从小到大
-template<class T>
-inline void bubbleSortAdvance(T arr[], int begin, int end){
-	for (int i = end; i > begin; --i){
-		bool isChange = false;
-		for (int j = begin; j < i; ++j){
-			if (arr[j + 1] < arr[j]){
-				swap(arr[j + 1], arr[j]);
-				isChange = true;
-			}
-		}
-		if (!isChange)
-			break;
-	}
-}
-```
 
 ---
 ### 4. 梳排序  
@@ -141,20 +164,30 @@ void combSort(T arr[],int begin, int end) {
 ![希尔排序演示](./img/xrpx.gif)
 
 ```
-//希尔排序,从小到大
-template<class T>
-inline void shellSort(T arr[], int begin, int end){
-	int gap = (end - begin + 1)/2;
-	while (gap > 0){
-		int start = begin + gap;
-		//类似插入排序，只是内部循环每次的距离的gap
-		for (int i = begin; i <= end; ++i){
-			for (int j = i; j >= start && arr[j]<arr[j-gap]; j -= gap){
-				swap(arr[j], arr[j - gap]);
-			}
-		}
-		gap /= 2;
-	}
+
+/**
+ * 希尔排序 方法 （分组进行插入排序）
+ * 时间：平均n1.5 最坏n2 最好n
+ * 空间：1
+ * 不稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function shellSort(arr,compare){
+  //分组
+  for(let gap = Math.floor(arr.length/2);gap>0;gap=Math.floor(gap/2)){
+    //按不同分组，同间隔来处理
+    for(let i=gap;i<arr.length;i++){
+      let current = arr[i];
+      let j;
+      for(j=i-gap;j-gap>=0 && compare(arr[j],current)>0;j-=gap){
+        arr[j+gap] = arr[j];
+      }
+      arr[j+gap] = current;
+    }
+  }
+  return arr;
 }
 ```
 
@@ -169,34 +202,36 @@ inline void shellSort(T arr[], int begin, int end){
 ![快速排序演示](./img/kspx.gif)
 
 ```
-//快排用到的工具函数
-template<class T>
-inline int quickPartition(T arr[], int begin, int end){
-	T midE = arr[begin];
-	int i = begin+1, j = end;
-	
-	while (true){
-		while (i <= j && arr[i] <= midE) ++i;
 
-		while (i <= j && arr[j] >= midE) --j;
-
-		if (i >= j)
-			break;
-
-		swap(arr[i], arr[j]);
-	}
-	swap(arr[begin], arr[j]);
-	return j;
+/**
+ * 快速排序 方法(分治：选基准，以基准值为中间值，分成两部分)
+ * 时间：平均nlogn 最坏n2 最好nlogn
+ * 空间：nlogn
+ * 不稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function quickSort(arr,compare){
+  quickSort_split(arr,0,arr.length-1,compare)
+  return arr;
 }
 
-//快速排序
-template<class T>
-void quickSort(T arr[], int begin, int end){
-	if (begin < end){
-		int mid = quickPartition(arr, begin, end);
-		quickSort(arr, begin, mid - 1);
-		quickSort(arr, mid + 1, end);
-	}
+
+function quickSort_split(arr,left,right,compare) {
+  if(left>=right)
+    return;
+  let tem = arr[left]; //基准
+  let i = left,j = right;
+  while(i<j){
+    while(i<j && compare(arr[j],tem)>=0)j--;
+    arr[i] = arr[j];
+    while(i<j && compare(arr[i],tem)<=0)i++;
+    arr[j] = arr[i];
+  }
+  arr[i] = tem;
+  quickSort_split(arr,left,i-1,compare);
+  quickSort_split(arr,i+1,right,compare);
 }
 ```
 
@@ -213,43 +248,44 @@ void quickSort(T arr[], int begin, int end){
 ![堆排序演示](./img/dpx.gif)
 
 ```
-//堆排序用到的工具，下沉小元素，一般从倒数第二层开始降
-template<class T>
-void heepSink(T arr[], int begin,int px, int end){
-	//保证有下一级元素
-	int npx;
-	while (begin+(npx=2 * px + 1) <= end){
-		
-		//选出两个子结点最大的一个
-		if (begin + npx < end && arr[begin + npx + 1] > arr[begin + npx])
-			npx++;
-		//如果已经是最大的，就不需要下沉了
-		if (arr[begin+px] > arr[begin+npx])
-			break;
+/**
+ * 堆排序(利用数据结构堆来实现排序)
+ * 时间：平均nlogn 最坏nlogn 最好nlogn
+ * 空间：1
+ * 不稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+ function heapSort(arr,compare){
+  //构建堆
+  for(let i = Math.floor(arr.length/2);i>=0;i--){
+    heapify(arr,arr.length,i,compare);
+  }
 
-		//上浮大的元素
-		swap(arr[begin+px], arr[begin+npx]);
-		//下一轮
-		px = npx;
-	}
+  //取值，调整
+  for(let i = arr.length-1;i>0;i--){
+    swap(arr,0,i);
+    heapify(arr,i,0,compare);
+  }
+
+
+  return arr;
 }
 
-//堆排序，从小到大
-template<class T>
-void heepSort(T arr[], int begin, int end){
-	int len = end - begin + 1;
+function heapify(arr,len,i,compare) {
+  let left = 2*i+1, right = 2*i+2;
+  let largest = i;
+  if(left<len && compare(arr[left],arr[largest])>0)
+    largest = left;
 
-	//先构造一个大顶堆,从最后一个元素的父元素开始下沉
-	for (int i = len / 2-1; i >= 0; i--){
-		heepSink(arr, begin,i, end);
-	}
+  if(right<len && compare(arr[right],arr[largest])>0)
+    largest = right;
 
-	while (end > begin){
-		//把大顶放到后面，然后end减一
-		swap(arr[begin], arr[end--]);
-		//然后把顶上的这个元素沉下去，形成新的大顶堆
-		heepSink(arr, begin,0, end);
-	}
+  if(largest!=i){
+    swap(arr,largest,i);
+    heapify(arr,len,largest,compare);
+  }
 }
 ```
 
@@ -264,42 +300,46 @@ void heepSort(T arr[], int begin, int end){
 ![归并排序演示](./img/gbpx.gif)
 
 ```
-//归并排序用到的工具
-template<class T>
-void merge(T arr[], int begin, int mid, int end){
-	int len = end - begin + 1;
-	T *tems = new int[len];
-
-	for (int inx = 0, i = begin, j = mid + 1; inx<len; inx++){
-		if (i>mid){
-			tems[inx] = arr[j++];
-		}
-		else if (j > end){
-			tems[inx] = arr[i++];
-		}
-		else if (arr[i] < arr[j]){
-			tems[inx] = arr[i++];
-		}
-		else{
-			tems[inx] = arr[j++];
-		}
-	}
-
-	for (int i = 0; i < len; ++i)
-		arr[begin+i] = tems[i];
-
-	delete[] tems;
+/**
+ * 归并排序 方法 （分治：二分，子序列合并（中间数组实现有序））
+ * 时间：平均nlogn 最坏nlogn 最好nlogn
+ * 空间：n
+ * 稳定
+ * @function
+ * @param {Object} arr 数组
+ * @returns 排序后的素组
+ */
+function mergeSort(arr,compare){
+  return mergeSort_split(arr,compare);
 }
 
-//归并排序，从小到大
-template<class T>
-void mergeSort(T arr[], int begin, int end){
-	if (begin >= end)
-		return;
-	int mid = (begin + end) / 2;
-	mergeSort(arr, begin, mid);
-	mergeSort(arr, mid + 1, end);
-	merge(arr, begin, mid, end);
+function mergeSort_split(arr,compare){
+  if(arr.length < 2)
+    return arr;
+
+  let middle = Math.floor(arr.length / 2);
+  //分
+  let left = mergeSort_split(arr.slice(0,middle),compare);
+  let right = mergeSort_split(arr.slice(middle),compare);
+  //治
+  return mergeSort_merge(left,right,compare);
+}
+
+
+function mergeSort_merge(left,right,compare){
+  let res = [];
+  while(left.length>0 && right.length>0){
+    if(compare(left[0],right[0])<0)
+      res.push(left.shift());
+    else
+      res.push(right.shift());
+  }
+
+  res.push(...left);
+  res.push(...right);
+
+  return res;
+
 }
 ```
 

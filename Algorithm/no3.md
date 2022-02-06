@@ -3,47 +3,42 @@
 
 1. 交换值功能函数
     ```
-    template<class T>
-    inline void Rswap(T &a, T &b){
-        T tem = a;
-        a = b;
-        b = tem;
+    function swap(arr, index1, index2){
+    	const temp = arr[index1];
+    	arr[index1] = arr[index2];
+    	arr[index2] = temp;
     }
     ```
+    
 2. 整数的辗转相除求最大公约数
     ```
-    template<class T>
-    T gcb(T a, T b){
-        if (a < b)
-            swap(a, b);
-
-        if (b == 0)
-            return a;
-
-
-        T c = a%b;
-
-        if (c == 0)
-            return b;
-
-        return gcb(c, b);
+    function gcb(a, b){
+    	if(a < b){
+    		const temp = a;
+    		a = b;
+    		b = temp;
+    	}
+    	
+    	if(b === 0){
+    		return a;
+    	}
+    	
+    	const c = a % b;
+    	if(c === 0){
+    		return b;
+    	}
+    	
+    	return gcb(c, b);
     }
-    ```
+    
 3. 浮点数判零值
     ```
-    const double d_zero = 0.1;
-
-    bool equalZero(double a){
-        if (fabs(a) < d_zero)
+    const d_zero = 0.1;
+    
+    function equalZero(a){
+        if (Math.abs(a) < d_zero)
             return true;
         return false;
-    }
-    ```
-4. 显示程序运行时间
-    ```
-    //显示程序运行时间
-    inline void printRunTimes(){
-        printf("Time used：%.6f\n",(double)clock()/CLOCKS_PER_SEC);
     }
     ```
 

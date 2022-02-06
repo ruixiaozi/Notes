@@ -1,571 +1,100 @@
-## 算法学习笔记 C++日期时间类
+## 算法学习笔记 双指针与滑动窗口
+
 ---
 
-主要实现日期时间的表示、操作等。
+### 1. 滑动窗口算法
 
-头文件：
+> 滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。
+>
+> 该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。
+
+简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。**其实这里就可以看出来滑动窗口主要应用在数组和字符串上。**
+
+可以用来解决一些查找满足一定条件的连续区间的性质（长度等）的问题。由于区间连续，因此当区间发生变化时，可以通过旧有的计算结果对搜索空间进行剪枝，这样便减少了重复计算，降低了时间复杂度。**往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。**
+
+需要注意的是，滑动窗口算法更多的是一种思想，而非某种数据结构的使用。 
+
+#### 滑动窗口法的大体框架
+
+- **滑动：**说明这个窗口是移动的，也就是移动是按照一定方向来的。
+- **窗口：**窗口大小并不是固定的，可以不断扩容直到满足一定的条件；也可以不断缩小，直到找到一个满足条件的最小窗口；当然也可以是固定大小。
+
+采用的是字符串来讲解。但是对于数组其实也是一样的。滑动窗口算法的思路是这样：
+
+1. 我们在字符串 S 中使用双指针中的左右指针技巧，初始化 left = right = 0，把索引闭区间 [left, right] 称为一个「窗口」。
+2. 我们先不断地增加 right 指针扩大窗口 [left, right]，直到窗口中的字符串(不)符合要求（包含了 T 中的所有字符）。
+3. 此时，我们停止增加 right，转而不断增加 left 指针缩小窗口 [left, right]，直到窗口中的字符串(不)符合要求。同时，每次增加 left，我们都要更新一轮结果。
+4. 重复第 2 和第 3 步，直到 right 到达字符串 S 的尽头。
+
+#### 1.1 无重复字符的最长子串 (3)
+
+给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
+
+示例 1:
+
 ```
-#ifndef DATETIME_H_INCLUDED
-#define DATETIME_H_INCLUDED
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
 
-#include <iostream>
-using namespace std;
+示例 2:
 
-class DateTime
-{
-private:
-	int year, month, day, hour, minute,second,week;
-public:
-	DateTime();
-	DateTime(int year, int month, int day);
-	DateTime(const DateTime &d) :year(d.year), month(d.month), day(d.day),hour(d.hour),minute(d.minute),second(d.second),week(d.week){}
-	DateTime(int year, int month, int day,int h,int m,int s);
-	~DateTime(){}
+```
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+```
 
-	//得到年日月时分秒星期
-	int getYear()const{ return year; }
-	int getMonth()const{ return month; }
-	int getDay()const{ return day; }
-	int getHour()const{ return hour; }
-	int getMinute()const { return minute; }
-	int getSecond()const { return second; }
-	int getWeek()const{ return week; }
+示例 3:
 
-	void setDate(int year, int month, int day);   //设置日期
-	void setDateTime(int y, int m, int d, int h, int min, int s);//设置日期时间
-	void setTime(int h, int m, int s);//设置时间
+```
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+```
 
-	static int calWeek(int y,int m,int d);//根据日期计算星期1-7
-	static bool isLeapYear(int year);   //判断是否为闰年
-	static int daysOfMonth(int year, int month);   //得到某个月的天数
+示例 4:
 
-	void show()const;   //显示日期
-	DateTime changeDays(const int days)const;   //改变日期
-	DateTime changeTimes(long long secs)const;   //改变时间
-	int distance(const DateTime &d)const;   ////计算传入日期距离当前日期的天数
-	long long secDistance(const DateTime &d)const;	////计算传入日期距离当前日期的秒数
+```
+输入: s = ""
+输出: 0
+```
 
-	/*重载运算符*/
+```
+/**
+ * @param {string} s
+ * @return {number}
+ */
+let lengthOfLongestSubstring = function(s) {
+    const set = new Set(); // hash set保存是否包含某个字符
+    let left = 0; // 左边界
+    let right = 0; // 右边界
+    let max = 0; // 最大长度
 
-	//日期加上days个天数
-	friend DateTime operator +(const DateTime &d, const int days);
-	friend DateTime operator +(const int days, const DateTime &d);
-	//日期加上secs个秒数
-	friend DateTime operator +(const DateTime &d, const long long secs);
-	friend DateTime operator +(const long long secs, const DateTime &d);
-	//自身加上days个天数
-	DateTime& operator +=(int days);
-	//自身加上secs个秒数
-	DateTime& operator +=(long long secs);
-
-	//日期自增一天
-	DateTime& operator ++();
-	DateTime operator ++(int);
-
-	//日期减去days个天数
-	friend DateTime operator -(const DateTime &d, const int days);
-	//日期减去secs个秒数
-	friend DateTime operator -(const DateTime &d, const long long secs);
-
-	//两个日期相减，等到差的天数
-	friend int operator -(const DateTime &d1, const DateTime &d2);
-	
-	//自身减去days个天数
-	DateTime& operator -=(int days);
-	//自身减去secs个秒数
-	DateTime& operator -=(long long secs);
-
-	//日期自减一天
-	DateTime& operator --();
-	DateTime operator --(int);
-
-	//日期大小比较，比较到秒
-	friend bool operator >(const DateTime &d1, const DateTime &d2);
-	friend bool operator >=(const DateTime &d1, const DateTime &d2);
-	friend bool operator <(const DateTime &d1, const DateTime &d2);
-	friend bool operator <=(const DateTime &d1, const DateTime &d2);
-	friend bool operator ==(const DateTime &d1, const DateTime &d2);
-	friend bool operator !=(const DateTime &d1, const DateTime &d2);
-
-	//输出，输入日期
-	friend ostream& operator <<(ostream &out, const DateTime &d);
-	friend istream& operator >>(istream &in, DateTime &d);
+    for(;right<s.length;right++){
+        if(!set.has(s.charAt(right))){
+            //扩大窗口，更新最大长度
+            set.add(s.charAt(right));
+            max = Math.max(max, set.size);
+        }
+        else{
+            //缩小窗口，直到再次满足条件
+            while(set.has(s.charAt(right))){
+                set.delete(s.charAt(left));
+                left++;
+            }
+            set.add(s.charAt(right));
+        }
+    }
+    return max;
 };
-
-#endif // DATETIME_H_INCLUDED
 ```
 
-源文件cpp：
-```
-#ifndef DATETIME_CPP
-#define DATETIME_CPP
 
-#include "DateTime.h"
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <string>
-using namespace std;
 
-string weekStr[8] = {
-	"我就是摆设",
-	"星期一",
-	"星期二",
-	"星期三",
-	"星期四",
-	"星期五",
-	"星期六",
-	"星期日"
-};
 
-DateTime::DateTime(){
-	time_t now = time(NULL);
-	struct tm *ttime = localtime(&now);
-	this->year = ttime->tm_year+1900;
-	this->month = ttime->tm_mon+1;
-	this->day = ttime->tm_mday;
-	this->hour = ttime->tm_hour;
-	this->minute = ttime->tm_min;
-	this->second = ttime->tm_sec;
-	this->week = ttime->tm_wday == 0 ? 7 : ttime->tm_wday;
-}
-
-DateTime::DateTime(int year, int month, int day) :year(year), month(month), day(day)
-{
-	this->hour = 0;
-	this->minute = 0;
-	this->second = 0;
-	this->week = 1;
-
-	if (year <= 0 || month <= 0 || month>12 || day <= 0 || day>daysOfMonth(year, month)){
-		cout << "Error invalid date: ";
-		show();
-		cout << endl;
-		exit(-1);
-	}
-	else{
-		
-		this->week = calWeek(year,month,day);
-	}
-}
-
-DateTime::DateTime(int year, int month, int day,int h,int m,int s)
-{
-	this->year = year;
-	this->month = month;
-	this->day = day;
-	this->hour = h;
-	this->minute = m;
-	this->second = s;
-	this->week = 1;
-
-	if (year <= 0 || month <= 0 || month>12 || day <= 0 || day>daysOfMonth(year, month) || h<0 || m<0 || s<0 || h>23 || m>59 || s>59){
-		cout << "Error invalid";
-		exit(-1);
-	}
-	else{
-		this->week = calWeek(year, month, day);
-	}
-}
-
-//设置日期
-void DateTime::setDate(int year, int month, int day)
-{
-	this->year = year;
-	this->month = month;
-	this->day = day;
-	this->week = calWeek(year, month, day);
-}
-
-//设置日期时间
-void DateTime::setDateTime(int y, int m, int d, int h, int min, int s)
-{
-	this->year = y;
-	this->month = m;
-	this->day = d;
-	this->week = calWeek(y, m, d);
-	this->hour = h;
-	this->minute = min;
-	this->second = s;
-}
-
-// 设置时间
-void DateTime::setTime(int h, int m, int s)
-{
-	this->hour = h;
-	this->minute = m;
-	this->second = s;
-}
-
-//根据日期计算星期1-7
-int DateTime::calWeek(int y, int m, int d)
-{
-	int w;
-	//保证一定是1582年10月4日之后
-	if (m == 1 || m == 2) m += 12, y = y - 1;
-	//蔡勒公式
-	w = (d + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400 + 1) % 7;
-	
-	return w == 0 ? 7 : w;
-
-}
-
-//判断是否为闰年
-bool DateTime::isLeapYear(int year)
-{
-	return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-}
-
-//得到某个月的天数
-int DateTime::daysOfMonth(int year, int month)
-{
-	int days = 0;
-
-	switch (month)
-	{
-	case 1:
-	case 3:
-	case 5:
-	case 7:
-	case 8:
-	case 10:
-	case 12:
-		days = 31;
-		break;
-	case 4:
-	case 6:
-	case 9:
-	case 11:
-		days = 30;
-		break;
-	case 2:
-		days = 28 + isLeapYear(year);
-		break;
-	}
-
-	return days;
-}
-
-//显示日期
-void DateTime::show()const
-{
-	cout << year << "-" << month << "-" << day << " " << hour << ":" << minute << ":" << second << " " << weekStr[week] << endl;
-}
-
-//改变日期
-DateTime DateTime::changeDays(const int days)const
-{
-	int yearTemp = year;
-	int monthTemp = month;
-	int dayTemp = day;
-
-	if (days>0){
-		dayTemp += days;
-
-		while (dayTemp>daysOfMonth(yearTemp, monthTemp)){
-			dayTemp -= daysOfMonth(yearTemp, monthTemp);
-
-			monthTemp++;
-			if (monthTemp>12){
-				yearTemp++;
-				monthTemp = 1;
-			}
-		}
-	}
-	else{   //days为负数
-		dayTemp += days;
-
-		while (dayTemp<1){
-			monthTemp--;
-			if (monthTemp<1){
-				yearTemp--;
-				monthTemp = 12;
-			}
-			dayTemp += daysOfMonth(yearTemp, monthTemp);
-		}
-	}
-
-	return DateTime(yearTemp, monthTemp, dayTemp,this->hour,this->minute,this->second);
-}
-
-//改变时间
-DateTime DateTime::changeTimes(long long secs)const
-{
-	int htemp = hour;
-	int mtemp = minute;
-	int stemp = second;
-	
-	int f = secs >= 0LL ? 1 : -1;
-	secs = f == 1 ? secs : -secs;
-
-	int days = f*(int)(secs / 86400LL);
-	secs %= 86400LL;
-
-	stemp += f*(int)secs;
-	while (stemp < 0){
-		mtemp--;
-		if (mtemp < 0){
-			htemp--;
-			if (htemp < 0){
-				days--;
-				htemp = 23;
-			}
-			mtemp = 59;
-		}
-		stemp += 60;
-	}
-
-	while (stemp>59){
-		mtemp++;
-		if (mtemp > 59){
-			htemp++;
-			if (htemp > 23){
-				days++;
-				htemp = 0;
-			}
-			mtemp = 0;
-		}
-		stemp -= 60;
-	}
-
-	DateTime d = this->changeDays(days);
-	
-	return DateTime(d.year,d.month,d.day,htemp,mtemp,stemp);
-
-}
-
-//计算传入日期距离当前日期的天数
-int DateTime::distance(const DateTime &d)const
-{
-	//存储平年中某个月1月之前有多少天
-	const int DAYS_OF_MONTH[] =
-	{ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
-
-	int years = year - d.year;
-	int months = DAYS_OF_MONTH[month] - DAYS_OF_MONTH[d.month];
-	int days = day - d.day;
-
-	//4年一闰，100的倍数免润，400的倍数再闰
-	int totalDays = years * 365 + years / 4 - years / 100 + years / 400
-		+ months + days;
-
-	return totalDays;
-}
-
-//计算传入日期距离当前日期的秒数
-long long DateTime::secDistance(const DateTime &d)const{
-	int days = this->distance(d);
-	long long secs = ((long long)days)*86400LL;
-	secs -= ((long long)this->hour) * 3600LL + ((long long)this->minute) * 60LL + ((long long)this->second);
-	secs += ((long long)d.hour) * 3600LL + ((long long)d.minute) * 60LL + ((long long)d.second);
-	return secs;
-}
-
-
-/*重载运算符*/
-
-//日期加上days个天数
-DateTime operator +(const DateTime &d, const int days)
-{
-	if (days == 0){   //如果天数为0，返回当个月
-		return d;
-	}
-	else
-		return d.changeDays(days);
-}
-
-//日期加上days个天数的重载
-DateTime operator +(const int days, const DateTime &d)
-{
-	if (days == 0){   //如果天数为0，返回当个月
-		return d;
-	}
-	else
-		return d.changeDays(days);
-}
-
-
-//日期加上secs个秒数
-DateTime operator +(const DateTime &d, const long long secs)
-{
-	if (secs == 0){   //如果秒数为0不变
-		return d;
-	}
-	else
-		return d.changeTimes(secs);
-}
-
-//日期加上secs个秒数的重载
-DateTime operator +(const long long secs, const DateTime &d)
-{
-	if (secs == 0){   //如果秒数为0不变
-		return d;
-	}
-	else
-		return d.changeTimes(secs);
-}
-
-
-//日期自身加上days个天数
-DateTime& DateTime::operator +=(int days)
-{
-	if (days == 0)
-		return *this;
-	else{
-		*this = this->changeDays(days);
-		return *this;
-	}
-}
-
-//日期自身加上secs个秒数
-DateTime& DateTime::operator +=(long long secs)
-{
-	if (secs == 0)
-		return *this;
-	else{
-		*this = this->changeTimes(secs);
-		return *this;
-	}
-}
-
-
-//日期自增一天
-DateTime& DateTime::operator ++()   //前置++
-{
-	*this = this->changeDays(1);
-	return *this;
-}
-
-DateTime DateTime::operator ++(int)   //后置++
-{
-	DateTime dTemp(*this);
-	++(*this);
-	return dTemp;
-}
-
-//日期减去days个天数
-DateTime operator -(const DateTime &d, const int days)
-{
-	if (days == 0){   //如果天数为0，返回当个月
-		return d;
-	}
-	else
-		return d.changeDays(-days);
-}
-
-//日期减去secs个秒数
-DateTime operator -(const DateTime &d, const long long secs)
-{
-	if (secs == 0){  
-		return d;
-	}
-	else
-		return d.changeTimes(-secs);
-}
-
-//两个日期相减
-int operator -(const DateTime &d1, const DateTime &d2)
-{
-	return d1.distance(d2);
-}
-
-
-//日期自身减去days个天数
-DateTime& DateTime::operator -=(int days)
-{
-	if (days == 0)
-		return *this;
-	else{
-		*this = this->changeDays(-days);
-		return *this;
-	}
-}
-
-//日期自身减去secs个秒数
-DateTime& DateTime::operator -=(long long secs)
-{
-	if (secs == 0)
-		return *this;
-	else{
-		*this = this->changeTimes(-secs);
-		return *this;
-	}
-}
-
-//日期自减一天
-DateTime& DateTime::operator--()   //前置--
-{
-	*this = this->changeDays(-1);
-	return *this;
-}
-
-DateTime DateTime::operator--(int)   //后置--
-{
-	DateTime dTemp(*this);
-	--(*this);
-	return dTemp;
-}
-
-//重载大小比较运算符
-bool operator >(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2)>0LL ? true : false;
-}
-
-bool operator >=(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2) >= 0LL ? true : false;
-}
-
-bool operator <(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2)<0LL ? true : false;
-}
-
-bool operator <=(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2) <= 0LL ? true : false;
-}
-
-bool operator ==(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2) == 0LL ? true : false;
-}
-
-bool operator !=(const DateTime &d1, const DateTime &d2)
-{
-	return d1.secDistance(d2) != 0LL ? true : false;
-}
-
-//重载输入输出运算符
-ostream& operator <<(ostream &out, const DateTime &d)
-{
-	out << d.getYear() << "-"
-		<< d.getMonth() << "-"
-		<< d.getDay() << " "
-		<< d.getHour() << ":"
-		<< d.getMinute() << ":"
-		<< d.getSecond() << " "
-		<< weekStr[d.getWeek()]
-		<<endl;
-
-	return out;
-}
-
-istream& operator >>(istream &in, DateTime &d)
-{
-	int year, month, day,h,m,s;
-
-	cout << "Input year month day hour minute second:" << endl;
-	in >> year >> month >> day >> h >> m >> s;
-
-	d.setDateTime(year, month, day,h,m,s);
-
-	return in;
-}
-
-#endif // DATETIME_CPP
-```
 
 ---
 
